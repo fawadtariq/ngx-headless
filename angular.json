@@ -1,0 +1,76 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "headless-ui": {
+      "projectType": "library",
+      "root": "projects/headless-ui",
+      "sourceRoot": "projects/headless-ui/src",
+      "prefix": "ngx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/headless-ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/headless-ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/headless-ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/headless-ui/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "headless-formkit": {
+      "projectType": "library",
+      "root": "projects/headless-formkit",
+      "sourceRoot": "projects/headless-formkit/src",
+      "prefix": "ngx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/headless-formkit/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/headless-formkit/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/headless-formkit/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/headless-formkit/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "29271cf2-8efd-40ac-a9f6-46c287c27328"
+  }
+}
