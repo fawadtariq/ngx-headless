@@ -3,9 +3,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "paths": {
+      "@ngx-headless/ui": ["./projects/headless-ui/src/public-api"],
       "headless-formkit": [
         "./dist/headless-formkit"
       ],

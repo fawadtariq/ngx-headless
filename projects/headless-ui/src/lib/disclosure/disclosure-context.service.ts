@@ -1,10 +1,22 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DisclosureContextService {
-  isOpen = signal(false);
+  private _open = false;
 
-  toggle = () => this.isOpen.update(v => !v);
-  close = () => this.isOpen.set(false);
-  open = () => this.isOpen.set(true);
+  isOpen(): boolean {
+    return this._open;
+  }
+
+  open(): void {
+    this._open = true;
+  }
+
+  close(): void {
+    this._open = false;
+  }
+
+  toggle(): void {
+    this._open = !this._open;
+  }
 }

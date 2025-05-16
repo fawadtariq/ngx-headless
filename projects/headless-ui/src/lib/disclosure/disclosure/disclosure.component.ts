@@ -1,34 +1,56 @@
-import { Component, Input, HostBinding, ContentChild, TemplateRef, ViewContainerRef, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  ContentChild,
+  TemplateRef,
+  forwardRef
+} from '@angular/core';
 import { DisclosureContextService } from '../disclosure-context.service';
 
 @Component({
   selector: 'Disclosure, [ngxDisclosure], ngx-headlessui-disclosure',
   standalone: true,
-  template: ``,
-  providers: [DisclosureContextService],
+  template: `<ng-content />`,
+  providers: [
+    DisclosureContextService,
+    {
+      provide: 'ngxDisclosure',
+      useExisting: forwardRef(() => DisclosureComponent)
+    }
+  ],
+  exportAs: 'ngxDisclosure'
 })
-export class DisclosureComponent implements OnInit {
+export class DisclosureComponent {
   @Input() class = '';
+  @Input() defaultOpen = false;
 
   @HostBinding('class')
   get hostClass() {
     return this.class;
   }
 
-  @ContentChild(TemplateRef) templateRef!: TemplateRef<any>;
-
-  constructor(
-    private viewContainer: ViewContainerRef,
-    private context: DisclosureContextService
-  ) {}
+  constructor(private context: DisclosureContextService) {}
 
   ngOnInit(): void {
-    if (this.templateRef) {
-      this.viewContainer.createEmbeddedView(this.templateRef, {
-        open: this.context.isOpen(),
-      });
-
-      // Reactively update view context if needed in future (optional)
+    if (this.defaultOpen) {
+      this.context.open();
     }
+  }
+
+  isOpen(): boolean {
+    return this.context.isOpen();
+  }
+
+  toggle(): void {
+    this.context.toggle();
+  }
+
+  open(): void {
+    this.context.open();
+  }
+
+  close(): void {
+    this.context.close();
   }
 }

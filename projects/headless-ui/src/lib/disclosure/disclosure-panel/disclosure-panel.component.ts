@@ -1,20 +1,18 @@
-import { Component, Input, HostBinding, computed } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding
+} from '@angular/core';
 import { DisclosureContextService } from '../disclosure-context.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'DisclosurePanel, [ngxDisclosurePanel], ngx-headlessui-disclosure-panel',
-  imports: [CommonModule],
+  selector: 'DisclosurePanel',
   standalone: true,
-  template: `
-    <ng-container *ngIf="isOpen()">
-      <ng-content />
-    </ng-container>
-  `,
+  imports: [CommonModule],
+  template: `<ng-content *ngIf="context.isOpen()" />`
 })
 export class DisclosurePanelComponent {
-  constructor(private context: DisclosureContextService) {}
-
   @Input() class = '';
 
   @HostBinding('class')
@@ -22,5 +20,5 @@ export class DisclosurePanelComponent {
     return this.class;
   }
 
-  isOpen = computed(() => this.context.isOpen());
+  constructor(public context: DisclosureContextService) {}
 }

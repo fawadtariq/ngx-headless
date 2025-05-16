@@ -1,14 +1,17 @@
-import { Component, Input, HostBinding, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  HostListener
+} from '@angular/core';
 import { DisclosureContextService } from '../disclosure-context.service';
 
 @Component({
-  selector: 'DisclosureButton, [ngxDisclosureButton], ngx-headlessui-disclosure-button',
+  selector: 'DisclosureButton',
   standalone: true,
-  template: `<ng-content />`,
+  template: `<ng-content />`
 })
 export class DisclosureButtonComponent {
-  constructor(private context: DisclosureContextService) {}
-
   @Input() class = '';
 
   @HostBinding('class')
@@ -16,8 +19,15 @@ export class DisclosureButtonComponent {
     return this.class;
   }
 
+  @HostBinding('attr.aria-expanded')
+  get ariaExpanded(): boolean {
+    return this.context.isOpen();
+  }
+
   @HostListener('click')
-  onClick() {
+  onClick(): void {
     this.context.toggle();
   }
+
+  constructor(private context: DisclosureContextService) {}
 }
