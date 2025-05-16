@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeadlessUiComponent } from './headless-ui.component';
+import { DisclosurePanelComponent } from './disclosure-panel.component';
 
-describe('HeadlessUiComponent', () => {
-  let component: HeadlessUiComponent;
-  let fixture: ComponentFixture<HeadlessUiComponent>;
+describe('DisclosurePanelComponent', () => {
+  let component: DisclosurePanelComponent;
+  let fixture: ComponentFixture<DisclosurePanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeadlessUiComponent]
+      imports: [DisclosurePanelComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HeadlessUiComponent);
+    fixture = TestBed.createComponent(DisclosurePanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

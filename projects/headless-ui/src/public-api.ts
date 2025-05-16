@@ -2,5 +2,5 @@
  * Public API Surface of headless-ui
  */
 
-export * from './lib/headless-ui.service';
-export * from './lib/headless-ui.component';
+export * from './lib/disclosure/disclosure-index';
+
