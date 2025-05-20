@@ -1,22 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  DisclosureComponent,
-  DisclosureButtonComponent,
-  DisclosurePanelComponent,
-} from '@ngx-headless/ui';
+import { DisclorureTemplateComponent } from "../examples/discolsure/disclosure-template/disclosure-template.component";
+import { DisclorureInjectionComponent } from '../examples/discolsure/disclosure-injection/disclosure-injection.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    DisclosureComponent,
-    DisclosureButtonComponent,
-    DisclosurePanelComponent,
-  ],
+    DisclorureTemplateComponent,
+    DisclorureInjectionComponent
+],
   templateUrl: "app.component.html",
 })
 export class AppComponent {
-
-    @ViewChild('disclosure') disclosure!: DisclosureComponent;
-
 }

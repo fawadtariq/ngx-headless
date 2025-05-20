@@ -80,10 +80,15 @@ const config: Config = {
           position: 'left',
           label: 'Tutorial',
         },
-        
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          href: 'https://github.com/fawadtariq/ngx-headless',
+          html: `
+          <a href="https://github.com/fawadtariq/ngx-headless" target="_blank" rel="noopener noreferrer" class="navbar__link" title="GitHub">
+            <svg class="size-8 text-black" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .297c-6.6 0-12 5.4-12 12 0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.3c-3.3.7-4-1.6-4-1.6-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.6 1.2 1.6 1.2 1 .1 1.5-.8 1.5-.8.2-.7.6-1.1 1-1.3-2.6-.3-5.4-1.3-5.4-5.8 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.5-5.4 5.8.5.4.9 1.2.9 2.4v3.6c0 .3.2.7.8.6A12 12 0 0 0 24 12.3c0-6.6-5.4-12-12-12z"/>
+            </svg>
+          </a>
+        `,
           position: 'right',
         },
       ],

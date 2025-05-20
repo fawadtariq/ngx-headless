@@ -1,0 +1,45 @@
+
+
+
+<div class="w-full px-4 pt-16">
+    <div class="mx-auto w-full max-w-md rounded-2xl bg-white p-2 flex flex-col gap-4">
+        <p class="text-2xl font-bold mb-24">Using Disclosures with template reference</p>
+        <p class="text-lg font-semibold">Single Disclosure</p>
+        <Disclosure #d="ngxDisclosure" [defaultOpen]="false" class="">
+            <DisclosureButton
+                class="cursor-pointer flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <span>What is your return policy?</span>
+                <div [ngClass]="{ 'rotate-180': d.isOpen() }">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </div>
+            </DisclosureButton>
+            <DisclosurePanel>
+                <p class="px-4 pb-2 pt-4 text-sm text-gray-500">
+                    You can return any item within 30 days of purchase.
+                </p>
+            </DisclosurePanel>
+        </Disclosure>
+        <p class="text-lg font-semibold mt-16">Multiple Disclosures in a ngFor Loop Render</p>
+        <Disclosure *ngFor="let faq of faqs" #disclosure="ngxDisclosure" [defaultOpen]="false" class="">
+            <DisclosureButton
+                class="cursor-pointer flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <span>{{faq.question}}</span>
+                <div [ngClass]="{ 'rotate-180': disclosure.isOpen() }">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </div>
+            </DisclosureButton>
+            <DisclosurePanel>
+                <p class="px-4 pb-2 pt-4 text-sm text-gray-500">
+                    {{faq.answer}}
+                </p>
+            </DisclosurePanel>
+        </Disclosure>
+
+    </div>
+</div>
