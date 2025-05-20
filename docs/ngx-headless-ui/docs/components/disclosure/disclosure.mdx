@@ -81,18 +81,41 @@ Access all instances in the component:
 
 ---
 
-### ✅ Dependency Injection — Single Disclosure
+### ✅ Dependency Injection — Single Disclosure (Advanced Usage)
 
-You can also inject `DisclosureContextService` inside a child component:
+In cases where you want to encapsulate toggle logic or access open state inside a child component, you can inject DisclosureContextService.
 
-```ts
-constructor(public disclosure: DisclosureContextService) {}
-```
+This is especially useful for buttons, status indicators, or nested logic inside a single Disclosure.
+
+Here's an example:
+Add a custom component anywhere inside the `<Disclosure>` wrapper:
 
 ```html
 <Disclosure>
+  ...
   <MyChildComponent></MyChildComponent>
+  ...
 </Disclosure>
+```
+
+Inject DisclosureContextService into the constructor of your component. You can then access and control the disclosure state programmatically.
+
+```ts
+import { DisclosureContextService } from '@ngx-headless/ui';
+
+...
+
+export class MyChildComponent {
+  constructor(public disclosure: DisclosureContextService) {}
+
+  ...
+
+  disclosure.isOpen();
+  disclosure.toggle();
+  disclosure.close();
+  disclosure.open();
+
+}
 ```
 
 > 🧠 Note: This works only inside a single `<Disclosure>` context. Injection **is not valid** for tracking multiple disclosures.
