@@ -5,7 +5,7 @@ sidebar_label: Getting Started
 sidebar_position: 0
 ---
 
-# @ngx-headless/ui
+# The Headless UI library Angular always deserved.
 
 Welcome to **@ngx-headless/ui** — a library of unstyled, accessible, and composable UI primitives for Angular.
 
@@ -48,9 +48,15 @@ You can write:
 <div ngxDisclosure>
   ...
 </div>
+
+<!-- or -->
+
+<ngx-headlessui-disclosure>
+  ...
+</ngx-headlessui-disclosure>
 ```
 
-Both work out of the box because components support **multiple selectors**:
+All three work out of the box because components support **multiple selectors**:
 
 ```ts
 selector: 'Disclosure, [ngxDisclosure], ngx-headlessui-disclosure'
@@ -61,7 +67,7 @@ selector: 'Disclosure, [ngxDisclosure], ngx-headlessui-disclosure'
 ## Installation
 
 ```bash
-pnpm add @ngx-headless/ui
+npm install @ngx-headless/ui
 ```
 
 ---
@@ -74,5 +80,5 @@ Check out the available components starting with [`Disclosure →`](./components
 
 ## License
 
-MIT © [your-org]
+MIT © @ngx-headless/ui
 

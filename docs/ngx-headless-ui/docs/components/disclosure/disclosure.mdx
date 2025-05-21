@@ -4,58 +4,75 @@ description: Accessible toggle component for showing and hiding content.
 sidebar_label: Disclosure
 ---
 
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+<CodePlayground
+  code={`<button class="bg-blue-500 text-white px-4 py-2 rounded">Click me</button>`}
+/>
+
+
 # Disclosure
 
-The `Disclosure` component is a fully headless and accessible UI primitive that enables toggling content visibility. It's inspired by [Headless UI](https://headlessui.com/vue/disclosure), but built natively for Angular.
+The `Disclosure` component is a fully headless and accessible UI primitive that enables toggling content visibility. It's inspired by [HeadlessUI Disclosure](https://headlessui.com/v1/vue/disclosure), but built natively for Angular.
 
 It is useful for building collapsible panels, accordions, and FAQs — while giving you complete control over markup and styling.
 
----
+## When to use it
+Use `Disclosure` when you need a toggleable UI component that is:
 
-## Component Parts
+- Fully customizable in layout and appearance
+- Accessible with screen readers and keyboard navigation
+- Controlled via Angular `templateRefs` or `Dependency Injection (DI)`
+- Compatible with reactive or template-driven forms
 
-- **Disclosure**: The provider and wrapper. Manages internal open/close state.
-- **DisclosureButton**: The trigger that toggles the panel open or closed.
-- **DisclosurePanel**: The container for content that is shown or hidden.
+Common use cases:
+
+- Collapsible panels
+- Accordions
+- FAQs
+
+## Anatomy
+
+A complete `Disclosure` is composed of three components:
+
+- **`Disclosure`** - The provider and wrapper. Manages internal open/close state.
+- **`DisclosureButton`** - The trigger that toggles the panel open or closed.
+- **`DisclosurePanel`** - The container for content that is shown or hidden.
 
 All three components are standalone and composable.
-
----
 
 ## Features
 
 - ✅ Accessible by default (ARIA attributes)
 - ✅ Tailwind-friendly (no styles imposed)
 - ✅ Multiple selectors supported:
-  - `Disclosure`
-  - `[ngxDisclosure]`
-  - `ngx-headlessui-disclosure`
+  - `<Disclosure>`
+  - `<div ngxDisclosure>`
+  - `<ngx-headlessui-disclosure>`
 - ✅ Works with both `#templateRefs` and Angular DI (`DisclosureContextService`)
 - ✅ Supports multiple instances per page
 
----
 
 ## Installation
+
+`Disclosure` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
 
 ```bash
 npm install @ngx-headless/ui
 ```
-
 Import the components directly:
 
 ```ts
 import {
   DisclosureComponent,
   DisclosureButtonComponent,
-  DisclosurePanelComponent
-} from '@ngx-headless/ui';
+  DisclosurePanelComponent,
+} from "@ngx-headless/ui";
 ```
-
----
 
 ## Usage Examples
 
-### ✅ Template Reference — Single Disclosure
+### Template Reference — Single Disclosure
 
 ```html
 <Disclosure #d="ngxDisclosure">
@@ -64,7 +81,7 @@ import {
 </Disclosure>
 ```
 
-### ✅ Template Reference — Multiple Disclosures (ngFor)
+### Template Reference — Multiple Disclosures (ngFor)
 
 ```html
 <Disclosure *ngFor="let faq of faqs" #d="ngxDisclosure">
@@ -73,15 +90,25 @@ import {
 </Disclosure>
 ```
 
-Access all instances in the component:
+Access all instances in the component in your class Root:
 
 ```ts
+...
+export class MyComponent {
+  ...
+
 @ViewChildren('d') disclosures!: QueryList<DisclosureComponent>;
+// ☝️ access to All Disclosures via #templateRefs
+
+// 🧠 NOTE: You can also use @ViewChild with DisclosureComponent without QueryList<> to capture a single instance
+
+  ...
+}
 ```
 
 ---
 
-### ✅ Dependency Injection — Single Disclosure (Advanced Usage)
+### Dependency Injection — Single Disclosure (Advanced Usage)
 
 In cases where you want to encapsulate toggle logic or access open state inside a child component, you can inject DisclosureContextService.
 
@@ -120,7 +147,18 @@ export class MyChildComponent {
 
 > 🧠 Note: This works only inside a single `<Disclosure>` context. Injection **is not valid** for tracking multiple disclosures.
 
----
+## Accessibility
+
+This component handles
+
+- `aria-expanded` on the `DisclosureButton`
+- `aria-controls` on the `DisclosureButton` (if linked to DisclosurePanel)
+- `id` and `aria-labelledby` linkage between button and panel (optional but supported)
+- Keyboard interaction (customizable): toggle on Enter / Space
+- tabindex and focus ring behaviors handled by browser natively
+- Screen reader compatibility for collapsed/expanded state
+
+Note: The component is fully headless — all accessibility behaviors are opt-in or behavior-driven without imposing any DOM structure. You are responsible for adding aria-controls, id, and keyboard bindings if needed.
 
 ## Animations
 
@@ -135,17 +173,17 @@ Angular supports entry/exit transitions using `@trigger` bindings and the `:ente
 Add an animation trigger to your component:
 
 ```ts
-import { trigger, transition, style, animate } from '@angular/animations';
+import { trigger, transition, style, animate } from "@angular/animations";
 
 @Component({
   animations: [
-    trigger('slideToggle', [
-      transition(':enter', [
+    trigger("slideToggle", [
+      transition(":enter", [
         style({ height: 0, opacity: 0 }),
-        animate('200ms ease-out', style({ height: '*', opacity: 1 })),
+        animate("200ms ease-out", style({ height: "*", opacity: 1 })),
       ]),
-      transition(':leave', [
-        animate('150ms ease-in', style({ height: 0, opacity: 0 })),
+      transition(":leave", [
+        animate("150ms ease-in", style({ height: 0, opacity: 0 })),
       ]),
     ]),
   ],
@@ -166,32 +204,32 @@ You can combine this with `Tailwind` transitions or any styling framework as nee
 
 ---
 
-## API Reference
+## Component API
 
-### DisclosureComponent
+### `DisclosureComponent`
 
-| Input         | Type      | Description                             |
-|---------------|-----------|-----------------------------------------|
-| `defaultOpen` | `boolean` | Whether it starts open                  |
-| `class`       | `string`  | Class for styling wrapper               |
+| Input         | Type      | Description               |
+| ------------- | --------- | ------------------------- |
+| `defaultOpen` | `boolean` | Whether it starts open    |
+| `class`       | `string`  | Class for styling wrapper |
 
-| Method         | Description                     |
-|----------------|---------------------------------|
-| `isOpen()`     | Returns `true` if panel is open |
-| `toggle()`     | Toggles panel open/close        |
-| `open()`       | Opens panel                     |
-| `close()`      | Closes panel                    |
+| Method     | Description                     |
+| ---------- | ------------------------------- |
+| `isOpen()` | Returns `true` if panel is open |
+| `toggle()` | Toggles panel open/close        |
+| `open()`   | Opens panel                     |
+| `close()`  | Closes panel                    |
 
 ---
 
-### DisclosureButtonComponent
+### `DisclosureButtonComponent`
 
 - Automatically binds `aria-expanded`
 - Toggles panel on click
 
 ---
 
-### DisclosurePanelComponent
+### `DisclosurePanelComponent`
 
 - Visible only when `Disclosure` is open
 - Can be styled or animated freely
@@ -199,16 +237,16 @@ You can combine this with `Tailwind` transitions or any styling framework as nee
 
 ---
 
-## Access Patterns: Summary
+## Access Patterns
 
-| Pattern            | Supports Multiple? | Central Control? | Use Case                         |
-|--------------------|--------------------|------------------|----------------------------------|
-| `#templateRef`     | ✅ Yes              | ✅ via `ViewChildren` | Recommended for most use cases   |
-| `DisclosureContextService` (DI) | ✅ Per-instance only | ❌ No             | Use inside isolated nested components |
+| Pattern                         | Supports Multiple?   | Central Control?      | Use Case                              |
+| ------------------------------- | -------------------- | --------------------- | ------------------------------------- |
+| `#templateRef`                  | ✅ Yes               | ✅ via `ViewChildren` | Recommended for most use cases        |
+| `DisclosureContextService` (DI) | ✅ Per-instance only | ❌ No                 | Use inside isolated nested components |
 
 ---
 
 ## See Also
 
 - [ARIA Disclosure Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/)
-- [Headless UI Disclosure](https://headlessui.com/vue/disclosure)
+- [Headless UI - Disclosure](https://headlessui.com/vue/disclosure)

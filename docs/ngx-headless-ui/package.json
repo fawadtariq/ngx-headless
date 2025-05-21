@@ -10,6 +10,7 @@
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
+    "styles:watch": "npx @tailwindcss/cli -i ./src/css/_tailwind-in.css -o ./src/css/_tw-out.css --watch",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc"

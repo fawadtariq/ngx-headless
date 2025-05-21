@@ -1,4 +1,3 @@
-// radio-group.component.ts
 import {
   Component,
   Input,
@@ -10,6 +9,7 @@ import {
   signal,
   effect,
   ElementRef,
+  OnInit,
 } from '@angular/core';
 import { RadioGroupContextService } from '../radio-group-context.service';
 import { CommonModule } from '@angular/common';
@@ -20,20 +20,32 @@ import { CommonModule } from '@angular/common';
   template: `<ng-content></ng-content>`,
   providers: [RadioGroupContextService],
   imports: [CommonModule],
+  exportAs: 'ngxRadioGroup',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     role: 'radiogroup',
   },
 })
-export class RadioGroupComponent<T = unknown> {
+export class RadioGroupComponent<T = unknown> implements OnInit {
   private ctx = inject(RadioGroupContextService) as RadioGroupContextService<T>;
 
   @Input() modelValue!: T;
+  @Input() defaultValue?: T;
+  @Input() class = '';
   @Output() modelValueChange = new EventEmitter<T>();
 
-  @Input() class = '';
   @HostBinding('class') get hostClasses() {
     return this.class;
+  }
+
+  ngOnInit() {
+    if (this.defaultValue !== undefined && (this.modelValue === undefined || this.modelValue === null)) {
+      this.ctx.setSelected(this.defaultValue);
+    }
+  }
+
+  ngOnChanges() {
+    this.ctx.setSelected(this.modelValue);
   }
 
   constructor() {
@@ -45,7 +57,24 @@ export class RadioGroupComponent<T = unknown> {
     });
   }
 
-  ngOnChanges() {
-    this.ctx.setSelected(this.modelValue);
+  // ✅ Public API
+  select(value: T) {
+    this.ctx.setSelected(value);
+  }
+
+  clear() {
+    this.ctx.setSelected(null as T);
+  }
+
+  isSelected(value: T): boolean {
+    return this.ctx.selected() === value;
+  }
+
+  getSelected(): T | null {
+    return this.ctx.selected();
+  }
+
+  toggle(value: T) {
+    this.isSelected(value) ? this.clear() : this.select(value);
   }
 }

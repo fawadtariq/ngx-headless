@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { DisclorureTemplateComponent } from "../examples/discolsure/disclosure-template/disclosure-template.component";
 import { DisclorureInjectionComponent } from '../examples/discolsure/disclosure-injection/disclosure-injection.component';
-import { RadioGroupExampleComponent } from "../examples/radio-group/basic/radio-group-example.component";
+import { RadioGroupExampleComponent } from "../examples/radio-group/full/radio-group-example.component";
 
 @Component({
   selector: 'app-root',

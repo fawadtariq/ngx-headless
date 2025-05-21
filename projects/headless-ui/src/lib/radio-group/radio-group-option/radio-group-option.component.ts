@@ -1,4 +1,3 @@
-// radio-group-option.component.ts
 import {
   Component,
   Input,
@@ -16,6 +15,7 @@ import { CommonModule } from '@angular/common';
   selector: 'RadioGroupOption, [ngxRadioGroupOption], ngx-headlessui-radiogroup-option',
   template: `<ng-content></ng-content>`,
   imports: [CommonModule],
+  exportAs: 'ngxRadioGroupOption',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RadioGroupOptionComponent<T = unknown> {
@@ -31,14 +31,16 @@ export class RadioGroupOptionComponent<T = unknown> {
 
   @HostBinding('attr.role') role = 'radio';
 
-  @HostBinding('attr.aria-checked')
-  get checked() {
+  get selected() {
     return this.ctx.selected() === this.value;
   }
 
-  @HostBinding('attr.tabindex')
-  get tabIndex() {
-    return this.checked ? 0 : -1;
+  @HostBinding('attr.aria-checked') get checked() {
+    return this.selected;
+  }
+
+  @HostBinding('attr.tabindex') get tabIndex() {
+    return this.selected ? 0 : -1;
   }
 
   @HostListener('click')
