@@ -1,15 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
-import { DisclorureTemplateComponent } from "../examples/discolsure/disclosure-template/disclosure-template.component";
-import { DisclorureInjectionComponent } from '../examples/discolsure/disclosure-injection/disclosure-injection.component';
-import { RadioGroupExampleComponent } from "../examples/radio-group/full/radio-group-example.component";
-
+import { Component } from '@angular/core';
+import {RouterModule} from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    DisclorureTemplateComponent,
-    DisclorureInjectionComponent,
-    RadioGroupExampleComponent
+    RouterModule
 ],
   templateUrl: "app.component.html",
 })

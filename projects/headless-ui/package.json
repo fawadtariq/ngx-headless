@@ -1,6 +1,14 @@
 {
   "name": "@ngx-headless/ui",
   "version": "0.0.1",
+  "author": {
+    "name": "Fawad Tariq",
+    "email": "connect@fawadtariq.dev",
+    "url": "https://fawadtariq.dev",
+    "organization": "@ngx-headless/ui",
+    "organizationUrl": "https://ui.ngx-headless.com"
+  },
+  "description": "Headless UI for Angular",
   "publishConfig": {
     "access":"public"
   },

@@ -6,9 +6,7 @@ sidebar_label: Disclosure
 
 import { CodePlayground } from '@site/src/components/CodePlayground';
 
-<CodePlayground
-  code={`<button class="bg-blue-500 text-white px-4 py-2 rounded">Click me</button>`}
-/>
+
 
 
 # Disclosure
@@ -16,6 +14,34 @@ import { CodePlayground } from '@site/src/components/CodePlayground';
 The `Disclosure` component is a fully headless and accessible UI primitive that enables toggling content visibility. It's inspired by [HeadlessUI Disclosure](https://headlessui.com/v1/vue/disclosure), but built natively for Angular.
 
 It is useful for building collapsible panels, accordions, and FAQs — while giving you complete control over markup and styling.
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="http://localhost:4200/embeds/disclosure/main" language="html"
+  code={`<div class="w-full px-4 pt-16">
+  <div class="mx-auto w-full max-w-md rounded-2xl bg-white p-2 flex flex-col gap-2">
+    <Disclosure [defaultOpen]="true" *ngFor="let item of faqs; let i = index" #disclosure="ngxDisclosure" [class.mt-2]="i !== 0">
+      <DisclosureButton
+        class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+        <span>{{ item.question }}</span>
+        <div [ngClass]="{ 'rotate-180 transform': disclosure.isOpen() }">
+        <!-- This is just an icon, feel free to use your own -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-purple-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
+      </DisclosureButton>
+      <DisclosurePanel>
+        <p class="px-4 pb-2 pt-4 text-sm text-gray-500">
+          {{ item.answer }}
+        </p>
+      </DisclosurePanel>
+    </Disclosure>
+  </div>
+</div>
+`}
+/>
 
 ## When to use it
 Use `Disclosure` when you need a toggleable UI component that is:

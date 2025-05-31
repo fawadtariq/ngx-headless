@@ -5,7 +5,7 @@ sidebar_label: Getting Started
 sidebar_position: 0
 ---
 
-# The Headless UI library Angular always deserved.
+# the ui library [Angular](https://angular.dev/) always deserved.
 
 Welcome to **@ngx-headless/ui** — a library of unstyled, accessible, and composable UI primitives for Angular.
 
@@ -74,7 +74,7 @@ npm install @ngx-headless/ui
 
 ## What's Next?
 
-Check out the available components starting with [`Disclosure →`](./components/disclosure). More components will follow.
+Check out the available [components](./category/components) starting with [`Disclosure`](./components/disclosure). More components will follow.
 
 ---
 

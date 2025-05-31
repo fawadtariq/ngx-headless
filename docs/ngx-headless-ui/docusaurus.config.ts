@@ -56,13 +56,19 @@ const config: Config = {
   ],
 
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: false,
+      respectPrefersColorScheme: false,
+    },
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: '@ngx-headless/ui',
+      title: ' ',
       logo: {
         alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        src: 'img/ngx-headless.svg',
+        srcDark: 'img/ngx-headless-dark.svg',
       },
       items: [
         {
@@ -83,7 +89,7 @@ const config: Config = {
       ],
     },
     footer: {
-      copyright: `Built with Docusaurus`,
+      copyright: `Built with <a href="https://docusaurus.io/" target="_blank" rel="noopener noreferrer">Docusaurus</a> by <a href="https://fawadtariq.dev" target="_blank" rel="noopener noreferrer">Fawad Tariq</a> © ${new Date().getFullYear()}.`,
     },
     prism: {
       theme: prismThemes.github,
