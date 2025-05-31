@@ -37,6 +37,10 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          showLastUpdateTime: true,
+        showLastUpdateAuthor: true,
+        // Force version dropdown even if only one version exists:
+        includeCurrentVersion: true
         },
         blog: {
           showReadingTime: true,
