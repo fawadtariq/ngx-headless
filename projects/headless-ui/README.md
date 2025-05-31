@@ -1,65 +1,80 @@
-# WORK IN PROGRESS -- COMING SOON!!
 
-# HeadlessUi
+# @ngx-headless/ui
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+A **Headless UI Component Library** for Angular — fully standalone, accessible, and style-agnostic primitives inspired by [Headless UI](https://headlessui.com).
 
-## Code scaffolding
+## 🚀 Packages
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This monorepo includes:
 
-```bash
-ng generate component component-name
-```
+- **`@ngx-headless/ui`**  
+  Angular headless UI component library published on [npm](https://www.npmjs.com/package/@ngx-headless/ui).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Demo App**  
+  Interactive Angular app for showcasing library usage.
 
-```bash
-ng generate --help
-```
+- **Documentation**  
+  Built with Docusaurus, supports versioned docs with embedded code samples and live demos.
 
-## Building
+---
 
-To build the library, run:
+## 📦 Installation
 
 ```bash
-ng build headless-ui
+npm install @ngx-headless/ui
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
-
-### Publishing the Library
-
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/headless-ui
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Or with PNPM:
 
 ```bash
-ng test
+pnpm add @ngx-headless/ui
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 🛠️ Usage
 
-```bash
-ng e2e
+Each component is fully style-agnostic and follows Angular’s recommended patterns:
+```typescript
+import { DisclosureModule } from '@ngx-headless/ui';
+
+@NgModule({
+  imports: [DisclosureModule],
+})
+export class MyModule {}
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Refer to the [documentation site](https://ngx-headless.com) for examples and API details.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📝 Development
+
+### 🗂️ Monorepo Structure
+
+```
+/
+├── apps/demo/             # Demo Angular app
+├── docs/                  # Docusaurus site
+├── projects/headless-ui/  # Library package
+├── pnpm-workspace.yaml
+└── package.json           # Root package
+```
+
+### 🔧 Scripts
+
+From the root:
+- \`pnpm install\` — Install dependencies across all workspaces.
+- \`pnpm build:lib\` — Build the headless UI library.
+- \`pnpm build:docs\` — Build the Docusaurus site.
+
+Inside \`docs/\`:
+- \`pnpm docusaurus docs:version <version>\` — Create a new docs version.
+
+---
+
+## 📄 License
+
+MIT © [Fawad Tariq](https://fawadtariq.dev)
+
+---
