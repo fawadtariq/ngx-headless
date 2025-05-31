@@ -1,5 +1,5 @@
 {
-  "name": "ngx-headless-ui",
+  "name": "docs-ngx-headless-ui",
   "version": "0.1.0",
   "private": true,
   "author": {
@@ -13,15 +13,18 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "npm run styles && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "styles:watch": "npx @tailwindcss/cli -i ./src/css/_tailwind-in.css -o ./src/css/_tw-out.css --watch",
+    "styles": "npx @tailwindcss/cli -i ./src/css/_tailwind-in.css -o ./src/css/_tw-out.css",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+
+    "version": "npm run styles && docusaurus docs:version"
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
