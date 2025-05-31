@@ -1,4 +1,4 @@
 packages:
   - projects/*
   - apps/*
-  - docs/*
+  - "docs/ngx-headless-ui"

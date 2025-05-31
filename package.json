@@ -12,8 +12,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:ui" : "ng build headless-ui --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+
+    "docs:build:ui": "pnpm --filter docs-ngx-headless-ui build",
+    "docs:version:ui": "pnpm --filter docs-ngx-headless-ui version"
   },
   "private": true,
   "workspaces": [
