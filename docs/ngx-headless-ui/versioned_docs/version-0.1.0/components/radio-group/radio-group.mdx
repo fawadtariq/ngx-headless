@@ -1,0 +1,322 @@
+---
+title: RadioGroup
+description: Headless UI primitive for choosing a single option from a list.
+sidebar_label: RadioGroup
+---
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+# RadioGroup
+
+The `RadioGroup` component is a fully headless and accessible UI primitive that enables selection of one option from a predefined list. It's inspired by [HeadlessUI RadioGroup](https://headlessui.com/v1/vue/radio-group), but built natively for Angular.
+
+It lets you build custom radio-style controls where users can select one option from a predefined list.
+
+Unlike native `<input type="radio">`, this component gives you full control over structure, behavior, and styling — without sacrificing accessibility or keyboard support.
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="http://localhost:4200/embeds/radiogroup/main" language="html"
+  code={`<div class="w-full h-full flex items-center justify-center px-5">
+  <div class="mx-auto w-full max-w-md rounded-2xl p-2 flex flex-col gap-2">
+    <RadioGroup #group="ngxRadioGroup" [(modelValue)]="selectedPlan">
+        <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
+        <div class="flex flex-col gap-y-2">
+          <RadioGroupOption *ngFor="let plan of plans" [value]="plan" #opt="ngxRadioGroupOption">
+            <div
+              class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none focus:ring-offset-2 focus:ring-offset-sky-300"
+              [ngClass]="{
+                  'border-2 border-white/60  bg-sky-900/75 text-white': opt.selected,
+                  'bg-white': !opt.selected
+                }">
+              <div class="flex w-full items-center justify-between">
+                <div class="flex flex-col">
+                  <div class="text-sm">
+                    <RadioGroupLabel class="font-medium" [class.text-white]="opt.selected"
+                      [class.text-gray-900]="!opt.selected">
+                      {{ plan.name }}
+                    </RadioGroupLabel>
+
+
+                  </div>
+                  <div class="text-sm">
+                    <RadioGroupDescription class="inline" [class.text-sky-100]="opt.selected"
+                      [class.text-gray-500]="!opt.selected">
+                      <span>{{ plan.ram }}/{{ plan.cpus }}</span>
+                      <span aria-hidden="true"> &middot; </span>
+                      <span>{{ plan.disk }}</span>
+                    </RadioGroupDescription>
+                  </div>
+                </div>
+
+                <div *ngIf="opt.selected" class="shrink-0 text-white">
+                  <!-- This is just an icon, feel free to use your own -->
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="12" fill="#fff" fill-opacity="0.2" />
+                    <path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </RadioGroupOption>
+        </div>
+      </RadioGroup>
+      <button (click)="clear()" type="button"
+        class="mt-4 rounded-sm bg-white/40 px-2 py-1 text-sm font-semibold text-white hover:bg-white/80 hover:text-sky-600">
+        Clear Selection
+      </button>
+  </div>
+</div>
+`}
+/>
+
+
+## When to use it
+
+Use `RadioGroup` when you need a single-select UI component that is:
+
+- Fully customizable in layout and appearance
+- Accessible with screen readers and keyboard navigation
+- Controlled via Angular binding (`[(modelValue)]`)
+- Compatible with reactive or template-driven forms
+
+Common use cases:
+
+- Language, gender, or theme selectors
+- Shipping or payment options
+- Rating levels
+
+## Anatomy
+
+A complete `RadioGroup` is composed of:
+
+- **`RadioGroup`** – The root container that manages selection
+- **`RadioGroupLabel`** – A label element tied to the group for screen readers
+- **`RadioGroupOption`** – Each selectable item, focusable and keyboard-accessible
+- **`RadioGroupDescription`** _(optional)_ – Assistive description linked to the group or individual options
+
+## Features
+
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<RadioGroup>`
+  - `<div ngxRadioGroup>`
+  - `<ngx-headlessui-radiogroup>`
+- ✅ Full control via `#templateRefs` making complex logic a breeze
+- ✅ Supports multiple instances per page
+
+## Installation
+
+`RadioGroup` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+
+Import the components directly:
+
+```ts
+import {
+  RadioGroupComponent,
+  RadioGroupDescriptionComponent,
+  RadioGroupLabelComponent,
+  RadioGroupOptionComponent,
+} from "@ngx-headless/ui";
+```
+
+## Usage Examples
+
+### Basic Example
+
+```ts
+languages = [
+  { id: "en", name: "English" },
+  { id: "fr", name: "French" },
+  { id: "ur", name: "Urdu" },
+];
+
+selectedLanguage = this.languages[0];
+```
+
+```html
+<RadioGroup [(modelValue)]="selectedLanguage" class="flex flex-col gap-4">
+  <RadioGroupLabel class="text-sm font-medium text-gray-700">
+    Select a language
+  </RadioGroupLabel>
+
+  <RadioGroupDescription class="text-sm text-gray-500">
+    This sets your preferred language across the app.
+  </RadioGroupDescription>
+
+  <RadioGroupOption
+    *ngFor="let lang of languages"
+    [value]="lang"
+    class="cursor-pointer px-4 py-2 border rounded-md hover:bg-gray-50"
+    [class.bg-blue-600]="selectedLanguage === lang"
+    [class.text-white]="selectedLanguage === lang"
+  >
+    {{ lang.name }}
+  </RadioGroupOption>
+</RadioGroup>
+```
+
+
+### Usage Example with #templateRefs
+
+```html
+//yourtemplate.component.html
+
+<RadioGroup #radioGroup="ngxRadioGroup" [(modelValue)]="selectedLanguage" class="flex flex-col gap-4">
+  <RadioGroupLabel class="text-sm font-medium text-gray-700">
+    Select a language
+  </RadioGroupLabel>
+
+  <RadioGroupDescription class="text-sm text-gray-500">
+    This sets your preferred language across the app.
+  </RadioGroupDescription>
+
+  <RadioGroupOption
+    #opt="ngxRadioGroupOption"
+    *ngFor="let lang of languages"
+    [value]="lang"
+    class="cursor-pointer px-4 py-2 border rounded-md hover:bg-gray-50"
+    [class.bg-blue-600]="selectedLanguage === lang"
+    [class.text-white]="selectedLanguage === lang"
+  >
+    {{ lang.name }}
+  </RadioGroupOption>
+</RadioGroup>
+```
+
+
+```ts
+
+//yourcomponent.component.ts
+
+...
+
+@ViewChild('radioGroup') radioGroup!: RadioGroupComponent;
+// ☝️ access to RadioGroupWrapper via #templateRefs
+
+@ViewChildren('opt') options!: QueryList<RadioGroupOptionComponent>;
+// ☝️ access to All RadioGroupOptions via #templateRefs
+
+// 🧠 NOTE: You can also use @ViewChild RadioGroupOptionComponent without QueryList<> to capture a single instance
+
+plans = [
+    {
+        name: 'Startup',
+        ram: '12GB',
+        cpus: '6 CPUs',
+        disk: '160 GB SSD disk',
+    },
+    ...
+]
+
+selectedPlan = null;
+// you can keep modelValue empty or pre-assign a default value like: selectedPlan = plans[0];
+
+clear() {
+    // now you have access to entire radioGroup instance and all its methods.
+    this.radioGroup.clear();
+}
+
+```
+
+## Accessibility
+
+This component handles:
+
+- `role="radiogroup"` on the root
+- `role="radio"` and `aria-checked` on each option
+- Keyboard navigation: `←`, `→`, `↑`, `↓` to move focus
+- `aria-labelledby` and `aria-describedby` linkage for assistive technologies
+- Focus ring and `tabindex` management
+
+## Animations
+
+`RadioGroup` and all it's components can be animated freely using Angular’s built-in animation system.
+
+Angular supports entry/exit transitions using `@trigger` bindings and the `:enter`/`:leave` lifecycle hooks.
+
+👉 [See Angular Animations Guide](https://angular.dev/guide/animations)
+
+## Component API
+
+### `RadioGroup`
+
+| Input           | Type       | Description                                          |
+|----------------|------------|------------------------------------------------------|
+| `modelValue`   | `T`        | The current selected value                          |
+| `defaultValue` | `T?`       | Optional default selection (used only if no modelValue) |
+| `class`        | `string`   | Utility classes applied to the outer group wrapper   |
+
+| Output             | Type              | Description                        |
+|--------------------|-------------------|------------------------------------|
+| `modelValueChange` | `EventEmitter<T>` | Emits when selection is updated   |
+
+| Method            | Returns         | Description                               |
+|-------------------|------------------|-------------------------------------------|
+| `select(value: T)`| `void`           | Sets the selected value                   |
+| `clear()`         | `void`           | Clears the current selection              |
+| `toggle(value: T)`| `void`           | Selects or clears the value               |
+| `getSelected()`   | `T \| null`      | Gets the currently selected value         |
+| `isSelected(value: T)` | `boolean`   | Checks if a given value is selected       |
+
+---
+
+### `RadioGroupOption`
+
+| Input   | Type     | Description                    |
+|---------|----------|--------------------------------|
+| `value` | `T`      | The value this option represents |
+| `class` | `string` | Utility classes for styling    |
+
+| HostBinding       | Type     | Description                                |
+|-------------------|----------|--------------------------------------------|
+| `selected`        | `boolean`| True if this option is currently selected  |
+| `aria-checked`    | `boolean`| ARIA state for screen reader compatibility |
+| `tabindex`        | `number` | Controls focus order and keyboard behavior |
+| `role`            | `'radio'`| Identifies the element as a radio option   |
+
+---
+
+### `RadioGroupLabel`
+
+| Input   | Type     | Description                    |
+|---------|----------|--------------------------------|
+| `class` | `string` | Utility classes for styling    |
+
+| Behavior            | Description                          |
+|---------------------|--------------------------------------|
+| `aria-labelledby`   | Applied to the nearest radiogroup    |
+| `id`                | Auto-generated and used for linkage  |
+
+---
+
+### `RadioGroupDescription`
+
+| Input   | Type     | Description                    |
+|---------|----------|--------------------------------|
+| `class` | `string` | Utility classes for styling    |
+
+| Behavior              | Description                                       |
+|-----------------------|---------------------------------------------------|
+| `aria-describedby`    | Applied to nearest `radiogroup` or `radio` option |
+| `id`                  | Auto-generated and used for linkage              |
+
+
+## Best Practices
+
+- Keep your option labels short and clear
+- Use consistent padding and spacing to visually group options
+- Avoid hiding options conditionally; use `*ngIf` cautiously
+- Add a `RadioGroupDescription` for clarity when options aren't self-explanatory
+
+---
+
+## See Also
+
+- [ARIA RadioGroup Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/)
+- [Headless UI – RadioGroup](https://headlessui.com/vue/radio-group)

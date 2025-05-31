@@ -1,0 +1,50 @@
+<div class="w-full h-full flex items-center justify-center px-5">
+  <div class="mx-auto w-full max-w-md rounded-2xl p-2 flex flex-col gap-2">
+    <RadioGroup #group="ngxRadioGroup" [(modelValue)]="selectedPlan">
+        <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
+        <div class="flex flex-col gap-y-2">
+          <RadioGroupOption *ngFor="let plan of plans" [value]="plan" #opt="ngxRadioGroupOption">
+            <div
+              class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none focus:ring-offset-2 focus:ring-offset-secondary-300"
+              [ngClass]="{
+                  'border-2 border-white/60  bg-secondary-900/75 text-white': opt.selected,
+                  'bg-white': !opt.selected
+                }">
+              <div class="flex w-full items-center justify-between">
+                <div class="flex flex-col">
+                  <div class="text-sm">
+                    <RadioGroupLabel class="font-medium" [class.text-white]="opt.selected"
+                      [class.text-gray-900]="!opt.selected">
+                      {{ plan.name }}
+                    </RadioGroupLabel>
+
+
+                  </div>
+                  <div class="text-sm">
+                    <RadioGroupDescription class="inline" [class.text-secondary-100]="opt.selected"
+                      [class.text-gray-500]="!opt.selected">
+                      <span>{{ plan.ram }}/{{ plan.cpus }}</span>
+                      <span aria-hidden="true"> &middot; </span>
+                      <span>{{ plan.disk }}</span>
+                    </RadioGroupDescription>
+                  </div>
+                </div>
+
+                <div *ngIf="opt.selected" class="shrink-0 text-white">
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="12" fill="#fff" fill-opacity="0.2" />
+                    <path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </RadioGroupOption>
+        </div>
+      </RadioGroup>
+      <button (click)="clear()" type="button"
+        class="mt-4 rounded-sm bg-white/40 px-2 py-1 text-sm font-semibold text-white hover:bg-white/80 hover:text-secondary-600">
+        Clear Selection
+      </button>
+  </div>
+</div>

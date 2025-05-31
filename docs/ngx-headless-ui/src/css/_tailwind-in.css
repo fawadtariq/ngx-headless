@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+ul {
+    @apply list-disc;
+}
+
+svg.breadcrumbHomeIcon_YNFT{
+    @apply inline;
+}
