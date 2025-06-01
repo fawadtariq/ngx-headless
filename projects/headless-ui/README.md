@@ -1,80 +1,77 @@
+# the ui library [Angular](https://angular.dev/) always deserved.
 
-# @ngx-headless/ui
+Welcome to **@ngx-headless/ui** — a library of unstyled, accessible, and composable UI primitives for Angular.
 
-A **Headless UI Component Library** for Angular — fully standalone, accessible, and style-agnostic primitives inspired by [Headless UI](https://headlessui.com).
-
-## 🚀 Packages
-
-This monorepo includes:
-
-- **`@ngx-headless/ui`**  
-  Angular headless UI component library published on [npm](https://www.npmjs.com/package/@ngx-headless/ui).
-
-- **Demo App**  
-  Interactive Angular app for showcasing library usage.
-
-- **Documentation**  
-  Built with Docusaurus, supports versioned docs with embedded code samples and live demos.
+Inspired by the philosophy behind [headlessui.com](https://headlessui.com), this library aims to bring the same level of **control, flexibility, and accessibility** to Angular developers without imposing any design or styling opinions.
 
 ---
 
-## 📦 Installation
+## Why @ngx-headless/ui?
+
+Modern UI development often requires total control over markup, styling, and behavior. Traditional component libraries are opinionated — they style and structure everything, which often clashes with custom designs or Tailwind-based workflows.
+
+@ngx-headless/ui offers:
+
+- ✅ **Headless components** – no markup, no styling, just behavior and accessibility
+- ✅ **Multiple selector support** – use tags, attributes, or custom selectors in templates
+- ✅ **Full styling freedom** – apply Tailwind, Bootstrap, or your custom design system
+- ✅ **Accessibility-first** – ARIA attributes, keyboard interactions, and best practices
+- ✅ **Angular-native** – no external dependencies, full DI and Signals support
+
+---
+
+## Component Philosophy
+
+Each component in `@ngx-headless/ui` is:
+
+- Built using **standalone Angular components**
+- Tree-shakable and small in size
+- Designed for **composition** and **template freedom**
+- Usable with any CSS framework
+
+You can write:
+
+```html
+<Disclosure>
+  ...
+</Disclosure>
+
+<!-- or -->
+
+<div ngxDisclosure>
+  ...
+</div>
+
+<!-- or -->
+
+<ngx-headlessui-disclosure>
+  ...
+</ngx-headlessui-disclosure>
+```
+
+All three work out of the box because components support **multiple selectors**:
+
+```ts
+selector: 'Disclosure, [ngxDisclosure], ngx-headlessui-disclosure'
+```
+
+---
+
+## Installation
 
 ```bash
 npm install @ngx-headless/ui
 ```
 
-Or with PNPM:
+---
 
-```bash
-pnpm add @ngx-headless/ui
-```
+## What's Next?
+
+Check out the available [documentation](https://docs-ui.ngx-headless.com/) or start with [ngx-headless.com website](https://ngx-headless.com/). More components will follow.
 
 ---
 
-## 🛠️ Usage
-
-Each component is fully style-agnostic and follows Angular’s recommended patterns:
-```typescript
-import { DisclosureModule } from '@ngx-headless/ui';
-
-@NgModule({
-  imports: [DisclosureModule],
-})
-export class MyModule {}
-```
-
-Refer to the [documentation site](https://ngx-headless.com) for examples and API details.
-
----
-
-## 📝 Development
-
-### 🗂️ Monorepo Structure
-
-```
-/
-├── apps/demo/             # Demo Angular app
-├── docs/                  # Docusaurus site
-├── projects/headless-ui/  # Library package
-├── pnpm-workspace.yaml
-└── package.json           # Root package
-```
-
-### 🔧 Scripts
-
-From the root:
-- \`pnpm install\` — Install dependencies across all workspaces.
-- \`pnpm build:lib\` — Build the headless UI library.
-- \`pnpm build:docs\` — Build the Docusaurus site.
-
-Inside \`docs/\`:
-- \`pnpm docusaurus docs:version <version>\` — Create a new docs version.
-
----
-
-## 📄 License
+## License
 
 MIT © [Fawad Tariq](https://fawadtariq.dev)
 
----
