@@ -1,0 +1,47 @@
+name: Publish Pipeline for Demo project of @ngx-headless/ui
+description: |
+  This workflow is triggered manually on master branch.
+  It builds the demo project and publishes it to Azure Static Web Apps.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          echo "version=${GITHUB_REF#refs/tags/@ngx-headless/ui@}" >> $GITHUB_ENV
+          echo "::set-output name=version::${GITHUB_REF#refs/tags/@ngx-headless/ui@}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm install
+
+      - name: Build App
+        run: pnpm build:demo:ui
+
+      - name: Deploy App to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          app_location: "dist/demo/browser"
+          api_location: ""
+          output_location: ""
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_FOR_DEMO_APP }}
+          deployment_action: "upload"
