@@ -13,6 +13,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:ui" : "ng build headless-ui --configuration production",
+    "build:demo:ui" : "ng build demo --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
 
