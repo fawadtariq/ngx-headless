@@ -1,8 +1,12 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+const demoBaseURL = process.env.DEMO_BASE_URL || 'http://localhost:4200';
 
 const config: Config = {
   title: '@ngx-headless/ui Docs',
@@ -26,6 +30,11 @@ const config: Config = {
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
+
+  customFields: {
+    demoBaseURL
+  },
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],

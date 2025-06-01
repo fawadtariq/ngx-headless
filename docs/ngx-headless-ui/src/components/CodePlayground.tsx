@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import CodeBlock from '@theme/CodeBlock';
-
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 export function CodePlayground({
   code,
   preview,
@@ -13,7 +13,9 @@ export function CodePlayground({
   language?: string;
 }) {
   const [showPreview, setShowPreview] = useState(true);
-  
+  const { siteConfig } = useDocusaurusContext();
+  const demoBaseURL = siteConfig.customFields.demoBaseURL;
+
   return (
     <div className=" flex flex-col gap-3 relative">
       <div className={`flex gap-2 z-10 justify-end p-1.5 rounded-md absolute top-2 right-2 bg-black/10 transition-all` }>
@@ -42,7 +44,7 @@ export function CodePlayground({
           <iframe
             className={"w-full h-96 rounded-md" + ` ${previewContainerClass}`}
             height={'100%'}
-            src={preview}
+            src={demoBaseURL + preview}
             title="Code Preview"
             sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
             style={{ border: 'none' }}
