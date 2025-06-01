@@ -41,6 +41,9 @@ jobs:
       - name: Version Docs
         run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
 
+      - name: Copy .env.production to .env
+        run: cp docs/ngx-headless-ui/.env.production docs/ngx-headless-ui/.env
+
       - name: Build Docs
         run: pnpm docs:build:ui
 
