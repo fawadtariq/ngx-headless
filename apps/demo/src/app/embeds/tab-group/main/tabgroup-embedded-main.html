@@ -1,0 +1,49 @@
+<div class="w-full h-full flex items-center justify-center px-5 ">
+    <div class="mx-auto w-full max-w-md rounded-2xl p-2 flex flex-col gap-2">
+        <TabGroup #tabGroup="ngxTabGroup" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndex = $event"
+            [defaultIndex]="0">
+            <TabList class="flex space-x-1 rounded-xl bg-primary-900/20 p-1">
+                <ng-container *ngFor="let category of categories; let i = index">
+                    <Tab [index]="i" [disabled]="category.disabled" class="w-full">
+                        <button [ngClass]="[
+                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                            'ring-white/60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
+                            tabGroup.selectedIndex === i
+                                ? 'bg-white text-primary-700 shadow'
+                                : 'text-primary-100 hover:bg-white/[0.12] hover:text-white'
+                            ]">
+                            {{ category.label }}
+                        </button>
+                    </Tab>
+                </ng-container>
+            </TabList>
+
+            <div class="mt-2">
+                <ng-container *ngFor="let category of categories; let i = index">
+                    <TabPanel [index]="i">
+                        <ul
+                            class="rounded-xl bg-white p-2 ring-white/60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2">
+                            <li *ngFor="let post of category.items" class="relative rounded-xl p-3 hover:bg-gray-100">
+                                <h3 class="text-sm font-medium leading-5">
+                                    {{ post.title }}
+                                </h3>
+
+                                <ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+                                    <li>{{ post.date }}</li>
+                                    <li>&middot;</li>
+                                    <li>{{ post.commentCount }} comments</li>
+                                    <li>&middot;</li>
+                                    <li>{{ post.shareCount }} shares</li>
+                                </ul>
+
+                                <p
+                                    class="absolute inset-0 rounded-md ring-primary-400 focus:z-10 focus:outline-none focus:ring-2">
+                                </p>
+                            </li>
+                        </ul>
+                    </TabPanel>
+                </ng-container>
+            </div>
+        </TabGroup>
+    </div>
+</div>
