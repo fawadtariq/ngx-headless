@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "version=${GITHUB_REF#refs/tags/@ngx-headless/ui@}" >> $GITHUB_ENV
           echo "::set-output name=version::${GITHUB_REF#refs/tags/@ngx-headless/ui@}"
-          
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -56,6 +56,7 @@ jobs:
           api_location: ""
           output_location: ""
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          deployment_action: "upload"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
