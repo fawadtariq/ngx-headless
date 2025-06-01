@@ -1,7 +1,7 @@
 {
   "name": "@ngx-headless/ui",
   "description": "Headless UI for Angular",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": {
     "name": "Fawad Tariq",
     "email": "connect@fawadtariq.dev",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fawadtariq/ngx-headless.git"
+    "url": "https://github.com/fawadtariq/ngx-headless/tree/master/projects/headless-ui"
   },
   "homepage": "https://docs-ui.ngx-headless.com",
   "bugs": {
