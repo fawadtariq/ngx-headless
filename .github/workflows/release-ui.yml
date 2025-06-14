@@ -47,8 +47,9 @@ jobs:
       - name: Build Docs
         run: pnpm docs:build:ui
 
-      - name: Publish Library to NPM
-        run: pnpm publish --filter @ngx-headless/ui --access public --no-git-checks
+      - name: Publish @ngx-headless/ui
+        working-directory: ./dist/headless-ui
+        run: pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

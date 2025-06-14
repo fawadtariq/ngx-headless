@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/fawadtariq/ngx-headless/issues?q=is%3Aissue%20state%3Aopen%20label%3A%40ngx-headless%2Fui"
   },
+   "scripts": {
+    "build": "ng-packagr -p ng-package.json"
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -28,5 +31,8 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "ng-packagr": "^19.2.2"
+  }
 }
