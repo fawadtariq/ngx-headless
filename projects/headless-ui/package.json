@@ -1,7 +1,7 @@
 {
   "name": "@ngx-headless/ui",
   "description": "Headless UI for Angular",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": {
     "name": "Fawad Tariq",
     "email": "connect@fawadtariq.dev",
