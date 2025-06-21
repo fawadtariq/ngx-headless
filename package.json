@@ -12,11 +12,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ui" : "ng build headless-ui --configuration production",
-    "build:demo:ui" : "ng build demo --configuration production",
+    "build:ui": "ng build headless-ui --configuration production",
+    "build:demo:ui": "ng build demo --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-
     "docs:build:ui": "pnpm --filter docs-ngx-headless-ui build",
     "docs:version:ui": "pnpm --filter docs-ngx-headless-ui version"
   },
@@ -24,9 +23,10 @@
   "workspaces": [
     "projects/*",
     "apps/*",
-    "docs/*" 
+    "docs/*"
   ],
   "dependencies": {
+    "@angular/animations": "^20.0.4",
     "@angular/common": "^19.2.0",
     "@angular/compiler": "^19.2.0",
     "@angular/forms": "^19.2.0",
