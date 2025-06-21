@@ -9,6 +9,8 @@ import { RadioGroupEmbeddedMainComponent } from './embeds/radio-group/main/radio
 
 //TabGroup Embeds
 import { TabGroupEmbeddedMainComponent } from './embeds/tab-group/main/tabgroup-embedded-main';
+import { MenuEmbeddedMainComponent } from './embeds/menu/main/menu-embedded-main';
+import { SwitchEmbeddedMainComponent } from './embeds/switch/switch-embedded-main';
 
 export const routes: Routes = [
     {
@@ -41,6 +43,26 @@ export const routes: Routes = [
                         path: 'main',
                         component: TabGroupEmbeddedMainComponent,
                         title: 'Tab Group Embedded Example - Main',
+                    },
+                ]
+            },
+            {
+                path: 'menu',
+                children: [
+                    {
+                        path: 'main',
+                        component: MenuEmbeddedMainComponent,
+                        title: 'Menu Embedded Example - Main',
+                    },
+                ]
+            },
+            {
+                path: 'switch',
+                children: [
+                    {
+                        path: 'main',
+                        component: SwitchEmbeddedMainComponent,
+                        title: 'Switch Embedded Example - Main',
                     },
                 ]
             }

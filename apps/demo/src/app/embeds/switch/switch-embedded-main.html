@@ -1,0 +1,23 @@
+<!-- switch-demo.component.html -->
+<div class="w-full h-full flex flex-col items-center gap-y-4 justify-center px-5 ">
+    <SwitchGroup>
+        <Switch [(checked)]="enabled"
+            class="relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+            [ngClass]="enabled ? 'bg-primary-50' : 'bg-gray-700'">
+            <span
+                class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full  shadow-lg ring-0 transition duration-200 ease-in-out"
+                [ngClass]="enabled ? 'translate-x-9 bg-primary-400'  : 'translate-x-0 bg-white'"></span>
+        </Switch>
+    </SwitchGroup>
+
+    <SwitchGroup class="flex items-center">
+        <SwitchLabel class="mr-4 text-sm font-medium text-gray-800">
+            Auto Switch
+        </SwitchLabel>
+        <Switch [(checked)]="auto" class="relative inline-flex h-[24px] w-[48px] items-center rounded-full bg-white/40 px-0.5"
+            [ngClass]="auto ? 'bg-blue-600' : 'bg-gray-300'">
+            <span class="inline-block h-[20px] w-[20px] transform rounded-full bg-white transition"
+                [ngClass]="auto ? 'translate-x-6' : 'translate-x-0'"></span>
+        </Switch>
+    </SwitchGroup>
+</div>

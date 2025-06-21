@@ -1,0 +1,264 @@
+---
+title: Menu
+description: Accessible Menu, with full accessibility and styling freedom.
+sidebar_label: Menu
+---
+
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+# Menu
+
+The `Menu` component is a fully headless and accessible dropdown menu primitive. It lets you build custom context menus, user dropdowns, and more — with full control over markup, behavior, and transitions.
+
+Inspired by [Headless UI Menu](https://headlessui.com/v1/vue/menu), but built for Angular.
+
+<CodePlayground
+  previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+  preview="/embeds/menu/main"
+  language="html"
+  code={`<Menu #menu="ngxMenu" class="relative inline-block text-left">
+        <MenuButton
+            class="inline-flex w-full justify-center rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
+            Options
+            <svg class="-mr-1 ml-2 h-5 w-5 text-violet-200 hover:text-violet-100" xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0l-4.25-4.25a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd" />
+            </svg>
+        </MenuButton>
+
+        <MenuItems *ngIf="menu.isOpen()" @menuTransition
+            class="absolute right-0 top-full mt-2 w-56 origin-top divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+            <div *ngFor="let section of navItems" class="px-1 py-1">
+                <MenuItem *ngFor="let item of section">
+                <button
+                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm text-gray-900 hover:bg-violet-500 hover:text-white">
+                    <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
+                    {{item.label}}
+                </button>
+                </MenuItem>
+            </div>
+
+
+        </MenuItems>
+    </Menu>`}
+/>
+
+## When to use it
+Use `Menu` when you need a dropdown menu that gives you full control over:
+
+- Markup and structure — no wrapper `<ul>` or forced elements
+- Styling — works perfectly with Tailwind, Bootstrap, or any custom design system
+- Behavior — full support for keyboard navigation, focus management, and accessibility
+- Logic — control opening/closing manually or through templates
+- Controlled via Angular `templateRefs` or `Dependency Injection (DI)`
+
+Common use cases:
+
+- Profile dropdowns
+- Action menus (e.g. "Edit", "Duplicate", "Delete")
+- Filter or sort menus
+- Context menus (right-click or dot menus)
+
+## Anatomy
+
+A complete `Disclosure` is composed of three components:
+
+- **`Menu`** - provides shared context for all children.
+- **`MenuButton`** - toggles the menu open/closed.
+- **`MenuItems`** - contains all the interactive options.
+- **`MenuItem`** - is an actionable item that emits `selected` when clicked
+
+Each element is fully composable and unstyled — you control layout, transitions, icons, and interaction patterns.
+
+## Features
+
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<Menu>`
+  - `<div ngxMenu>`
+  - `<ngx-headlessui-menu>`
+- ✅ Works with both `#templateRefs` and Angular DI (`MenuContextService`)
+- ✅ Supports multiple instances per page
+
+## Installation
+
+`Menu` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+
+Import the components directly:
+
+```ts
+import {
+  MenuComponent,
+  MenuButtonComponent,
+  MenuItemsComponent,
+  MenuItemComponent
+} from "@ngx-headless/ui";
+```
+
+## Usage Examples
+
+### Template Reference — Single Menu
+
+```html
+<Menu #menuRef="ngxMenu">
+  <MenuButton [class.active]="menuRef.isOpen()">Toggle</MenuButton>
+  <MenuItems *ngIf="menuRef.isOpen()">
+    <MenuItem>...</MenuItem>
+  </MenuItems>
+</Menu>
+```
+
+### Template Reference — Multiple Menus (ngFor)
+
+```html
+<Menu *ngFor="let action of actions" #menuRef="ngxMenu">
+  <MenuButton [class.active]="menuRef.isOpen()">Toggle</MenuButton>
+  <MenuItems *ngIf="menuRef.isOpen()">
+    <MenuItem *ngFor="let item of action.items" > {{item.label}} </MenuItem>
+  </MenuItems>
+</Menu>
+```
+
+Access all instances in the component in your class Root:
+
+```ts
+...
+export class MyComponent {
+  ...
+
+@ViewChildren('menuRef') menuInstances!: QueryList<MenuComponent>;
+// ☝️ access to All Menus via #templateRefs
+
+// 🧠 NOTE: You can also use @ViewChild with MenuComponent without QueryList<> to capture a single instance
+
+  ...
+}
+```
+
+## Accessibility
+
+- Fully ARIA-compliant with roles: `menu`, `menuitem`, `aria-haspopup`, `aria-expanded`
+- Keyboard support (coming soon)
+- Screen reader-friendly structure
+
+## Animations
+
+`MenuItems` can be animated freely using Angular’s built-in animation system.
+
+Angular supports entry/exit transitions using `@trigger` bindings and the `:enter`/`:leave` lifecycle hooks.
+
+👉 [See Angular Animations Guide](https://angular.dev/guide/animations)
+
+### Example
+
+Add an animation trigger to your component:
+
+```ts
+import { trigger, transition, style, animate } from "@angular/animations";
+
+@Component({
+  animations: [
+    trigger("menuAppear", [
+     transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0.9)' }),
+        animate('100ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+    ]),
+    transition(':leave', [
+        style({ opacity: 1, transform: 'scale(1)' }),
+        animate('75ms ease-in', style({ opacity: 0, transform: 'scale(0.9)' }))
+    ])
+    ]),
+  ],
+})
+export class ExampleComponent {}
+```
+
+Use it in the template with `*ngIf`:
+
+```html
+<MenuItems *ngIf="disclosure.isOpen()" @menuAppear>
+  Panel content goes here.
+</MenuItems>
+```
+
+✅ You now have full control over the entrance and exit behavior of the panel.  
+You can combine this with `Tailwind` transitions or any styling framework as needed.
+
+
+## Component API
+
+### `MenuComponent`
+
+| Input     | Type     | Description                                 |
+|-----------|----------|---------------------------------------------|
+| `class`   | `string` | Class applied to the wrapper                |
+
+| Host Binding                  | Description                                  |
+|------------------------------|----------------------------------------------|
+| `role="menu"`                | ARIA role                                    |
+| `aria-orientation="vertical"`| Indicates vertical layout                    |
+| `aria-expanded`              | Reflects open state                          |
+
+| Behavior                     | Description                                  |
+|-----------------------------|----------------------------------------------|
+| Auto close                  | Closes menu when clicking outside            |
+
+
+### `MenuButtonComponent`
+
+| Input     | Type     | Description                                 |
+|-----------|----------|---------------------------------------------|
+| `class`   | `string` | Class applied to the button                 |
+
+| Host Binding                       | Description                                |
+|-----------------------------------|--------------------------------------------|
+| `role="button"`                   | ARIA role                                  |
+| `aria-haspopup="menu"`           | Indicates menu relationship                |
+| `aria-expanded`                  | Reflects open state                        |
+| `tabindex="0"`                   | Makes the element focusable                |
+
+| Behavior             | Description              |
+|----------------------|--------------------------|
+| `(click)` toggles menu | Toggles menu open state |
+
+
+### `MenuItemsComponent`
+
+| Input     | Type     | Description                                 |
+|-----------|----------|---------------------------------------------|
+| `class`   | `string` | Class applied to the menu items container   |
+
+| Host Binding       | Description                                  |
+|--------------------|----------------------------------------------|
+| `role="menu"`      | ARIA role                                    |
+| `hidden`           | Hidden when `Menu` is closed                 |
+
+
+### `MenuItemComponent`
+
+| Input       | Type      | Description                          |
+|-------------|-----------|--------------------------------------|
+| `class`     | `string`  | Class applied to the menu item       |
+| `disabled`  | `boolean` | Prevents interaction if `true`       |
+
+| Output      | Type              | Description                       |
+|-------------|-------------------|-----------------------------------|
+| `selected`  | `EventEmitter<void>` | Emits on item click (if enabled) |
+
+| Host Binding       | Description                         |
+|--------------------|-------------------------------------|
+| `role="menuitem"`  | ARIA role                           |
+| `tabindex="-1"`    | Makes item keyboard-accessible      |
+| `aria-disabled`    | Reflects disabled state             |
+
+## See Also
+
+- [ARIA Menu Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu/)
+- [Headless UI - Menu](https://headlessui.com/v1/vue/menu)

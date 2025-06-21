@@ -1,0 +1,154 @@
+---
+title: Switch
+description: Accessible, unstyled switch component for Angular.
+sidebar_label: Switch
+---
+
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+# Switch
+
+The `Switch` component is a headless toggle component — perfect for binary on/off states. Inspired by Headless UI’s [Switch](https://headlessui.com/v1/vue/switch), but built natively for Angular.
+
+It gives you complete control over markup and styling while providing accessible keyboard navigation and ARIA roles.
+
+## Example
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="/embeds/switch/main"
+language="html"
+code={`<SwitchGroup>
+        <Switch [(checked)]="enabled"
+            class="relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+            [ngClass]="enabled ? 'bg-primary-50' : 'bg-gray-700'">
+            <span
+                class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full  shadow-lg ring-0 transition duration-200 ease-in-out"
+                [ngClass]="enabled ? 'translate-x-9 bg-primary-400'  : 'translate-x-0 bg-white'"></span>
+        </Switch>
+    </SwitchGroup>
+    `}
+/>
+
+## When to use it
+
+Use the `Switch` component when you need a simple, binary toggle between two states — such as on/off, enabled/disabled, or visible/hidden.
+
+Unlike checkboxes, `Switch` is ideal for immediate actions rather than form submissions. It's best suited for:
+
+- Fully customizable in layout and appearance
+- Compatible with reactive or template-driven forms
+
+Common use cases:
+
+- Settings panels (e.g., “Enable notifications”)
+- Toggles in preferences or user profile pages
+- Feature flags or experimental options
+- Visibility, access, or interaction toggles
+
+Switch is not meant for multi-choice selections — use [`RadioGroup`](/docs/components/radio-group) or `Checkbox` in those cases.
+
+## Anatomy
+
+A complete `Switch` is composed of:
+
+- **`SwitchGroup`** – Wraps the label and switch together semantically and visually
+- **`SwitchLabel`** – Provides a text label for accessibility; visually or screen-reader only (optional)
+- **`Switch`** – The core interactive toggle; emits changes via `[(checked)]` binding
+
+## Features
+
+- ✅ Headless by design — no styles, full control over markup and classes
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<Switch>`
+  - `<div ngxSwitch>`
+  - `<ngx-headlessui-switch>`
+- ✅ Composable — works with `SwitchGroup` and `SwitchLabel` for flexible structure
+- ✅ Supports multiple instances per page
+
+## Installation
+
+`Switch` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+
+Import the components directly:
+
+```ts
+import {
+    SwitchComponent, 
+    SwitchLabel, 
+    SwitchGroup
+} from "@ngx-headless/ui";
+```
+## Usage Examples
+
+### Toggle
+
+```html
+<SwitchGroup>
+  <Switch [(checked)]="enabled"
+      class="relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+      [ngClass]="enabled ? 'bg-primary-50' : 'bg-gray-700'">
+      <span
+          class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full  shadow-lg ring-0 transition duration-200 ease-in-out"
+          [ngClass]="enabled ? 'translate-x-9 bg-primary-400'  : 'translate-x-0 bg-white'"></span>
+  </Switch>
+</SwitchGroup>
+```
+
+## Accessibility
+
+This component handles:
+
+- `role="switch"` on the root Switch element
+- `aria-checked="true"` or `"false"` based on the current state
+- `aria-disabled="true"` when the switch is disabled
+- `tabindex="0"` to support keyboard focus
+- Keyboard navigation:
+  - `Space` to toggle the switch
+  - `Tab` to move in and out of the component
+
+## Animations
+
+`Switch` can be animated freely using Angular’s built-in animation system.
+
+Angular supports entry/exit transitions using `@trigger` bindings and the `:enter`/`:leave` lifecycle hooks.
+
+👉 [See Angular Animations Guide](https://angular.dev/guide/animations)
+
+## Component API
+
+### `Switch`
+
+| Input        | Type      | Description                        |
+|--------------|-----------|------------------------------------|
+| `checked`    | `boolean` | Current checked state              |
+| `disabled`   | `boolean` | Whether the switch is disabled     |
+
+| Output          | Type               | Description                    |
+|-----------------|--------------------|--------------------------------|
+| `checkedChange` | `EventEmitter<boolean>` | Emitted on toggle         |
+
+### `SwitchLabel`
+
+No inputs or outputs. Used for visual or semantic labeling.
+
+### `SwitchGroup`
+
+A layout-only wrapper. No props, no state.
+
+---
+
+The `Switch` component is completely unstyled and accessible. You can apply any styles or animations you want using Tailwind CSS or your own design system.
+
+
+## See Also
+
+- [ARIA Tabs Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/)
+- [Headless UI - Tabs](https://headlessui.com/v1/vue/switch)
+
