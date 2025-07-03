@@ -11,6 +11,7 @@ export class ComboboxInputComponent {
   private ctx = inject(ComboboxContextService);
 
   @Input() class = '';
+  @Input() value = '';
   @HostBinding('class') get hostClass() { return this.class; }
   @HostBinding('attr.role') role = 'combobox';
   @HostBinding('attr.aria-expanded') get expanded() {

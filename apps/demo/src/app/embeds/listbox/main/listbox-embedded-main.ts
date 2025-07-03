@@ -7,7 +7,7 @@ import {
   ListboxButtonComponent,
   ListboxOptionsComponent,
   ListboxOptionComponent
-} from '../../../../../../projects/headless-ui/src/lib/listbox/listbox-index';
+} from '@ngx-headless/ui';
 
 const slideDown = trigger('slideDown', [
   transition(':enter', [

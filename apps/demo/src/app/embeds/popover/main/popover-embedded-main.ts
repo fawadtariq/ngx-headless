@@ -7,7 +7,7 @@ import {
   PopoverComponent,
   PopoverButtonComponent,
   PopoverPanelComponent
-} from '../../../../../../projects/headless-ui/src/lib/popover/popover-index';
+} from '@ngx-headless/ui';
 
 const fadeIn = trigger('fadeIn', [
   transition(':enter', [
