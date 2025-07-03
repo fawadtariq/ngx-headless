@@ -10,3 +10,4 @@ export * from './lib/switch/switch-index';
 export * from './lib/listbox/listbox-index';
 export * from './lib/combobox/combobox-index';
 export * from './lib/popover/popover-index';
+export * from './lib/dialog/dialog-index';
