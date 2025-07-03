@@ -1,0 +1,307 @@
+---
+title: Dialog
+description: Accessible modal dialog component for overlays and confirmations.
+sidebar_label: Dialog
+---
+
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+# Dialog
+
+The `Dialog` component is a fully headless and accessible UI primitive for creating modal dialogs and overlays. It's inspired by [HeadlessUI Dialog](https://headlessui.com/v1/vue/dialog), but built natively for Angular.
+
+It is useful for building modal windows, confirmation dialogs, forms, and other overlay content — while giving you complete control over markup and styling.
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="/embeds/dialog/main" language="html"
+  code={`<Dialog #dialog="ngxDialog" class="relative z-10">
+  <div *ngIf="dialog.isOpen()" @fadeIn class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+  <div *ngIf="dialog.isOpen()" class="fixed inset-0 z-10 w-screen overflow-y-auto">
+    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+      <DialogPanel @slideUp
+        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+              <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <DialogTitle class="text-base font-semibold leading-6 text-gray-900">
+                Deactivate account
+              </DialogTitle>
+              <div class="mt-2">
+                <DialogDescription class="text-sm text-gray-500">
+                  Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.
+                </DialogDescription>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+          <button (click)="dialog.close()" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button>
+          <button (click)="dialog.close()" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+        </div>
+      </DialogPanel>
+    </div>
+  </div>
+</Dialog>`}
+/>
+
+## When to use it
+Use `Dialog` when you need a modal overlay component that is:
+
+- Fully customizable in layout and appearance
+- Accessible with screen readers and keyboard navigation
+- Modal with backdrop and focus management
+- Dismissible via escape key
+- Compatible with complex content layouts
+
+Common use cases:
+
+- Confirmation dialogs
+- Modal forms
+- Image lightboxes
+- Alert dialogs
+- Settings panels
+
+## Anatomy
+
+A complete `Dialog` is composed of four components:
+
+- **`Dialog`** - The provider and wrapper. Manages internal open/close state and modal behavior.
+- **`DialogPanel`** - The main content container for the dialog.
+- **`DialogTitle`** - The title/heading for the dialog (for accessibility).
+- **`DialogDescription`** - The description text for the dialog (for accessibility).
+
+All four components are standalone and composable.
+
+## Features
+
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<Dialog>`
+  - `<div ngxDialog>`
+  - `<ngx-headlessui-dialog>`
+- ✅ Works with both `#templateRefs` and Angular DI (`DialogContextService`)
+- ✅ Supports multiple instances per page
+- ✅ Escape key to close
+- ✅ Modal behavior with `aria-modal`
+
+## Installation
+
+`Dialog` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+Import the components directly:
+
+```ts
+import {
+  DialogComponent,
+  DialogPanelComponent,
+  DialogTitleComponent,
+  DialogDescriptionComponent,
+} from "@ngx-headless/ui";
+```
+
+## Usage Examples
+
+### Template Reference — Basic Dialog
+
+```html
+<Dialog #d="ngxDialog">
+  <div *ngIf="d.isOpen()" class="fixed inset-0 bg-black bg-opacity-50">
+    <DialogPanel class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg">
+      <DialogTitle class="text-lg font-bold">Dialog Title</DialogTitle>
+      <DialogDescription class="mt-2 text-gray-600">
+        This is the dialog content.
+      </DialogDescription>
+      <button (click)="d.close()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        Close
+      </button>
+    </DialogPanel>
+  </div>
+</Dialog>
+```
+
+### Template Reference — Confirmation Dialog
+
+```html
+<Dialog #confirmDialog="ngxDialog">
+  <div *ngIf="confirmDialog.isOpen()" class="fixed inset-0 z-50">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+    
+    <!-- Dialog -->
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <DialogPanel class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <DialogTitle class="text-lg font-semibold text-gray-900">
+          Confirm Action
+        </DialogTitle>
+        <DialogDescription class="mt-2 text-sm text-gray-500">
+          Are you sure you want to proceed? This action cannot be undone.
+        </DialogDescription>
+        <div class="mt-6 flex gap-3 justify-end">
+          <button (click)="confirmDialog.close()" 
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+            Cancel
+          </button>
+          <button (click)="handleConfirm(); confirmDialog.close()" 
+            class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+            Confirm
+          </button>
+        </div>
+      </DialogPanel>
+    </div>
+  </div>
+</Dialog>
+```
+
+## Accessibility
+
+This component handles
+
+- `role="dialog"` on the `Dialog`
+- `aria-modal="true"` when the dialog is open
+- `aria-labelledby` pointing to the `DialogTitle`
+- `aria-describedby` pointing to the `DialogDescription`
+- Keyboard interaction: Escape key to close
+- Screen reader compatibility for modal state
+
+## Animations
+
+`DialogPanel` and backdrop elements can be animated freely using Angular's built-in animation system.
+
+### Example
+
+Add animation triggers to your component:
+
+```ts
+import { trigger, transition, style, animate } from "@angular/animations";
+
+@Component({
+  animations: [
+    trigger("fadeIn", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("150ms ease-out", style({ opacity: 1 })),
+      ]),
+      transition(":leave", [
+        animate("100ms ease-in", style({ opacity: 0 })),
+      ]),
+    ]),
+    trigger("slideUp", [
+      transition(":enter", [
+        style({ opacity: 0, transform: "translateY(4px) scale(0.95)" }),
+        animate("150ms ease-out", style({ opacity: 1, transform: "translateY(0) scale(1)" })),
+      ]),
+      transition(":leave", [
+        animate("100ms ease-in", style({ opacity: 0, transform: "translateY(4px) scale(0.95)" })),
+      ]),
+    ]),
+  ],
+})
+export class ExampleComponent {}
+```
+
+Use them in the template:
+
+```html
+<Dialog #dialog="ngxDialog">
+  <div *ngIf="dialog.isOpen()" @fadeIn class="fixed inset-0 bg-black bg-opacity-50"></div>
+  <DialogPanel *ngIf="dialog.isOpen()" @slideUp>
+    Content goes here.
+  </DialogPanel>
+</Dialog>
+```
+
+## Component API
+
+### `DialogComponent`
+
+| Input   | Type     | Description               |
+| ------- | -------- | ------------------------- |
+| `class` | `string` | Class for styling wrapper |
+
+| Method     | Description                     |
+| ---------- | ------------------------------- |
+| `isOpen()` | Returns `true` if dialog open   |
+| `toggle()` | Toggles dialog open/close       |
+| `open()`   | Opens dialog                    |
+| `close()`  | Closes dialog                   |
+
+### `DialogPanelComponent`
+
+- Visible only when `Dialog` is open
+- Can be styled or animated freely
+- `hidden` attribute used for visibility
+- Supports complex content layouts
+
+### `DialogTitleComponent`
+
+- Automatically sets `id="dialog-title"` for accessibility
+- Should be referenced by `aria-labelledby` on the dialog
+
+### `DialogDescriptionComponent`
+
+- Automatically sets `id="dialog-description"` for accessibility
+- Should be referenced by `aria-describedby` on the dialog
+
+## Focus Management
+
+The `Dialog` component does not include built-in focus trapping. For production use, consider adding focus management:
+
+### Manual Focus Management
+
+```ts
+export class MyDialogComponent {
+  @ViewChild('firstFocusable') firstFocusable!: ElementRef;
+  @ViewChild('dialog') dialog!: DialogComponent;
+
+  openDialog() {
+    this.dialog.open();
+    // Focus first element when opened
+    setTimeout(() => this.firstFocusable.nativeElement.focus(), 0);
+  }
+
+  @HostListener('keydown.tab', ['$event'])
+  handleTab(event: KeyboardEvent) {
+    // Implement focus trapping logic here
+  }
+}
+```
+
+### With CDK a11y
+
+```ts
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+
+export class MyDialogComponent implements OnDestroy {
+  private focusTrap?: FocusTrap;
+
+  constructor(private focusTrapFactory: FocusTrapFactory) {}
+
+  openDialog() {
+    this.dialog.open();
+    this.focusTrap = this.focusTrapFactory.create(this.dialogElement);
+    this.focusTrap.focusInitialElement();
+  }
+
+  closeDialog() {
+    this.dialog.close();
+    this.focusTrap?.destroy();
+  }
+}
+```
+
+## See Also
+
+- [ARIA Dialog Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)
+- [Headless UI - Dialog](https://headlessui.com/vue/dialog)
+- [Angular CDK a11y](https://material.angular.io/cdk/a11y/overview) for focus management
