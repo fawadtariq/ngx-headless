@@ -8,3 +8,4 @@ export * from './lib/tabs/tabs-index';
 export * from './lib/menu/menu-index';
 export * from './lib/switch/switch-index';
 export * from './lib/listbox/listbox-index';
+export * from './lib/combobox/combobox-index';

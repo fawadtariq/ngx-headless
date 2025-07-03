@@ -5,6 +5,8 @@ import { DisclosureEmbeddedMainComponent } from './embeds/disclosure/main/disclo
 
 import { ListboxEmbeddedMainComponent } from './embeds/listbox/main/listbox-embedded-main';
 
+import { ComboboxEmbeddedMainComponent } from './embeds/combobox/main/combobox-embedded-main';
+
 //RadioGroup Embeds
 import { RadioGroupEmbeddedMainComponent } from './embeds/radio-group/main/radiogroup-embedded-main';
 
@@ -34,6 +36,16 @@ export const routes: Routes = [
                         path: 'main',
                         component: ListboxEmbeddedMainComponent,
                         title: 'Listbox Embedded Example - Main',
+                    },
+                ]
+            },
+            {
+                path: 'combobox',
+                children: [
+                    {
+                        path: 'main',
+                        component: ComboboxEmbeddedMainComponent,
+                        title: 'Combobox Embedded Example - Main',
                     },
                 ]
             },
