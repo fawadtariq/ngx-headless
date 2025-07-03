@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 //Disclosure Embeds
 import { DisclosureEmbeddedMainComponent } from './embeds/disclosure/main/disclosure-embedded-main';
 
+import { ListboxEmbeddedMainComponent } from './embeds/listbox/main/listbox-embedded-main';
 
 //RadioGroup Embeds
 import { RadioGroupEmbeddedMainComponent } from './embeds/radio-group/main/radiogroup-embedded-main';
@@ -23,6 +24,16 @@ export const routes: Routes = [
                         path: 'main',
                         component: DisclosureEmbeddedMainComponent,
                         title: 'Disclosure Embedded Example - Main',
+                    },
+                ]
+            },
+            {
+                path: 'listbox',
+                children: [
+                    {
+                        path: 'main',
+                        component: ListboxEmbeddedMainComponent,
+                        title: 'Listbox Embedded Example - Main',
                     },
                 ]
             },
