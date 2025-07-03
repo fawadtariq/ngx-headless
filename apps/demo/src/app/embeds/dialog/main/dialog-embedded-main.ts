@@ -7,7 +7,7 @@ import {
   DialogPanelComponent,
   DialogTitleComponent,
   DialogDescriptionComponent
-} from '../../../../../../projects/headless-ui/src/lib/dialog/dialog-index';
+} from '@ngx-headless/ui';
 
 const fadeIn = trigger('fadeIn', [
   transition(':enter', [

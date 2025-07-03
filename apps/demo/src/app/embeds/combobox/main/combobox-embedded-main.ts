@@ -8,7 +8,7 @@ import {
   ComboboxButtonComponent,
   ComboboxOptionsComponent,
   ComboboxOptionComponent
-} from '../../../../../../projects/headless-ui/src/lib/combobox/combobox-index';
+} from '@ngx-headless/ui';
 
 const slideDown = trigger('slideDown', [
   transition(':enter', [
