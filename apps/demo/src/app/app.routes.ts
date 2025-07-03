@@ -7,6 +7,8 @@ import { ListboxEmbeddedMainComponent } from './embeds/listbox/main/listbox-embe
 
 import { ComboboxEmbeddedMainComponent } from './embeds/combobox/main/combobox-embedded-main';
 
+import { PopoverEmbeddedMainComponent } from './embeds/popover/main/popover-embedded-main';
+
 //RadioGroup Embeds
 import { RadioGroupEmbeddedMainComponent } from './embeds/radio-group/main/radiogroup-embedded-main';
 
@@ -46,6 +48,16 @@ export const routes: Routes = [
                         path: 'main',
                         component: ComboboxEmbeddedMainComponent,
                         title: 'Combobox Embedded Example - Main',
+                    },
+                ]
+            },
+            {
+                path: 'popover',
+                children: [
+                    {
+                        path: 'main',
+                        component: PopoverEmbeddedMainComponent,
+                        title: 'Popover Embedded Example - Main',
                     },
                 ]
             },

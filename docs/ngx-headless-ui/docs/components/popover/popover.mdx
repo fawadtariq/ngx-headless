@@ -1,0 +1,252 @@
+---
+title: Popover
+description: Accessible popover component for displaying floating content.
+sidebar_label: Popover
+---
+
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+# Popover
+
+The `Popover` component is a fully headless and accessible UI primitive for displaying floating content. It's inspired by [HeadlessUI Popover](https://headlessui.com/v1/vue/popover), but built natively for Angular.
+
+It is useful for building tooltips, dropdown menus, context menus, and other floating UI elements — while giving you complete control over markup and styling.
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="/embeds/popover/main" language="html"
+  code={`<Popover #popover="ngxPopover" class="relative">
+  <PopoverButton
+    class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700">
+    <span>Solutions</span>
+    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.08 0l-4.25-4.25a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+    </svg>
+  </PopoverButton>
+
+  <PopoverPanel *ngIf="popover.isOpen()" @fadeIn
+    class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
+    <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+      <div class="p-4">
+        <div *ngFor="let item of solutions" class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
+          <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+            <div [innerHTML]="item.icon" class="h-6 w-6 text-gray-600 group-hover:text-indigo-600"></div>
+          </div>
+          <div>
+            <a [href]="item.href" class="font-semibold text-gray-900">
+              {{ item.name }}
+              <span class="absolute inset-0"></span>
+            </a>
+            <p class="mt-1 text-gray-600">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </PopoverPanel>
+</Popover>`}
+/>
+
+## When to use it
+Use `Popover` when you need a floating content component that is:
+
+- Fully customizable in layout and appearance
+- Accessible with screen readers and keyboard navigation
+- Positioned relative to a trigger element
+- Dismissible via click outside or escape key
+- Compatible with complex content layouts
+
+Common use cases:
+
+- Dropdown menus
+- Tooltips with rich content
+- Context menus
+- Help popovers
+- Navigation menus
+
+## Anatomy
+
+A complete `Popover` is composed of three components:
+
+- **`Popover`** - The provider and wrapper. Manages internal open/close state.
+- **`PopoverButton`** - The trigger that toggles the popover open or closed.
+- **`PopoverPanel`** - The floating content container.
+
+All three components are standalone and composable.
+
+## Features
+
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<Popover>`
+  - `<div ngxPopover>`
+  - `<ngx-headlessui-popover>`
+- ✅ Works with both `#templateRefs` and Angular DI (`PopoverContextService`)
+- ✅ Supports multiple instances per page
+- ✅ Click outside to close
+- ✅ Escape key to close
+
+## Installation
+
+`Popover` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+Import the components directly:
+
+```ts
+import {
+  PopoverComponent,
+  PopoverButtonComponent,
+  PopoverPanelComponent,
+} from "@ngx-headless/ui";
+```
+
+## Usage Examples
+
+### Template Reference — Basic Popover
+
+```html
+<Popover #p="ngxPopover">
+  <PopoverButton>Open Popover</PopoverButton>
+  <PopoverPanel *ngIf="p.isOpen()">
+    <div class="popover-content">
+      <h3>Popover Title</h3>
+      <p>This is the popover content.</p>
+    </div>
+  </PopoverPanel>
+</Popover>
+```
+
+### Template Reference — Rich Content Popover
+
+```html
+<Popover #p="ngxPopover" class="relative">
+  <PopoverButton class="btn">
+    More Options
+  </PopoverButton>
+  <PopoverPanel *ngIf="p.isOpen()" class="absolute top-full left-0 mt-2 w-64">
+    <div class="bg-white rounded-lg shadow-lg p-4">
+      <div *ngFor="let option of options" class="py-2">
+        <a [href]="option.href" class="block hover:bg-gray-100 p-2 rounded">
+          {{ option.label }}
+        </a>
+      </div>
+    </div>
+  </PopoverPanel>
+</Popover>
+```
+
+## Accessibility
+
+This component handles
+
+- `aria-expanded` on the `PopoverButton`
+- `role="button"` on the `PopoverButton`
+- Keyboard interaction: toggle on Enter / Space, close on Escape
+- Click outside to close behavior
+- Screen reader compatibility for open/close state
+
+## Animations
+
+`PopoverPanel` can be animated freely using Angular's built-in animation system.
+
+### Example
+
+Add an animation trigger to your component:
+
+```ts
+import { trigger, transition, style, animate } from "@angular/animations";
+
+@Component({
+  animations: [
+    trigger("fadeIn", [
+      transition(":enter", [
+        style({ opacity: 0, transform: "scale(0.95)" }),
+        animate("100ms ease-out", style({ opacity: 1, transform: "scale(1)" })),
+      ]),
+      transition(":leave", [
+        animate("75ms ease-in", style({ opacity: 0, transform: "scale(0.95)" })),
+      ]),
+    ]),
+  ],
+})
+export class ExampleComponent {}
+```
+
+Use it in the template with `*ngIf`:
+
+```html
+<PopoverPanel *ngIf="popover.isOpen()" @fadeIn>
+  Content goes here.
+</PopoverPanel>
+```
+
+## Component API
+
+### `PopoverComponent`
+
+| Input   | Type     | Description               |
+| ------- | -------- | ------------------------- |
+| `class` | `string` | Class for styling wrapper |
+
+| Method     | Description                     |
+| ---------- | ------------------------------- |
+| `isOpen()` | Returns `true` if popover open  |
+| `toggle()` | Toggles popover open/close      |
+| `open()`   | Opens popover                   |
+| `close()`  | Closes popover                  |
+
+### `PopoverButtonComponent`
+
+- Automatically binds `aria-expanded` and `role`
+- Toggles popover on click and keyboard interaction
+- Handles Enter and Space key activation
+
+### `PopoverPanelComponent`
+
+- Visible only when `Popover` is open
+- Can be styled or animated freely
+- `hidden` attribute used for visibility
+- Supports complex content layouts
+
+## Positioning
+
+The `PopoverPanel` does not include built-in positioning logic. You can position it using CSS classes or a positioning library like Floating UI.
+
+### CSS Positioning Example
+
+```html
+<Popover class="relative">
+  <PopoverButton>Trigger</PopoverButton>
+  <PopoverPanel *ngIf="popover.isOpen()" 
+    class="absolute top-full left-0 mt-2 w-64 z-10">
+    Content
+  </PopoverPanel>
+</Popover>
+```
+
+### With Floating UI
+
+```ts
+import { computePosition, flip, shift, offset } from '@floating-ui/dom';
+
+// In your component
+async updatePosition() {
+  const { x, y } = await computePosition(this.button, this.panel, {
+    middleware: [offset(10), flip(), shift({ padding: 5 })],
+  });
+  
+  Object.assign(this.panel.style, {
+    left: `${x}px`,
+    top: `${y}px`,
+  });
+}
+```
+
+## See Also
+
+- [ARIA Disclosure Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/)
+- [Headless UI - Popover](https://headlessui.com/vue/popover)
+- [Floating UI](https://floating-ui.com/) for advanced positioning
