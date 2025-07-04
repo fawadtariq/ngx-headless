@@ -40,15 +40,18 @@ export class DialogEmbeddedMainComponent {
   @ViewChild('dialog') dialog!: DialogComponent;
 
   openDialog() {
-    this.dialog.open();
+    if (this.dialog) {
+      this.dialog.open();
+    }
   }
 
   closeDialog() {
-    this.dialog.close();
+    if (this.dialog) {
+      this.dialog.close();
+    }
   }
 
   handleDeactivate() {
-    console.log('Account deactivated');
     this.closeDialog();
   }
 }

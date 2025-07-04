@@ -5,7 +5,7 @@
       Deactivate account
     </button>
 
-    <Dialog #dialog="ngxDialog" class="relative z-10">
+    <TestDialog #dialog="ngxTestDialog" class="relative z-10">
       <!-- Backdrop -->
       <div *ngIf="dialog.isOpen()" @fadeIn class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
@@ -46,6 +46,6 @@
           </DialogPanel>
         </div>
       </div>
-    </Dialog>
+    </TestDialog>
   </div>
 </div>
