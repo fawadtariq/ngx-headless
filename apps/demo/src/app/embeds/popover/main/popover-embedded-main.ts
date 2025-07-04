@@ -31,6 +31,12 @@ export class PopoverEmbeddedMainComponent {
 
   constructor(public sanitizer: DomSanitizer) {}
 
+  ngOnInit() {
+    setTimeout(() => {
+      this.popover.open();
+    }, 100);
+  }
+
   solutions = [
     {
       name: 'Analytics',
