@@ -2,12 +2,12 @@ import { Component, ElementRef, HostListener, HostBinding, inject, Input } from 
 import { DialogContextService } from '../dialog-context.service';
 
 @Component({
-  selector: 'TestDialog, [ngxTestDialog], ngx-headlessui-test-dialog',
+  selector: 'DialogGroup, [ngxDialogGroup], ngx-headlessui-dialog-group',
   standalone: true,
   providers: [
     DialogContextService
   ],
-  exportAs: 'ngxTestDialog',
+  exportAs: 'ngxDialogGroup',
   template: `<ng-content />`
 })
 export class DialogComponent {
