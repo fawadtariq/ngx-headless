@@ -41,6 +41,9 @@ export class ListboxEmbeddedMainComponent {
 
   ngOnInit() {
     this.selectedPerson = this.people[0];
+    setTimeout(() => {
+      this.listbox.open();
+    }, 100);
   }
 
   onSelectionChange(person: any) {
