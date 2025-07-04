@@ -5,7 +5,13 @@ import { ComboboxContextService } from '../combobox-context.service';
   selector: 'ComboboxInput, [ngxComboboxInput], ngx-headlessui-combobox-input',
   standalone: true,
   exportAs: 'ngxComboboxInput',
-  template: `<ng-content />`
+  template: `<input 
+    [value]="value"
+    [class]="class"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    (keydown)="onKeydown($event)"
+  />`
 })
 export class ComboboxInputComponent {
   private ctx = inject(ComboboxContextService);
