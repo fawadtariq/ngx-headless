@@ -17,7 +17,7 @@
       <ComboboxOptions *ngIf="combobox.isOpen() && filteredPeople.length > 0" @slideDown
         class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-10">
         <ComboboxOption *ngFor="let person of filteredPeople" [value]="person" (selected)="onSelectionChange($event)"
-          class="relative cursor-default select-none py-2 pl-10 pr-4 hover:bg-teal-600 hover:text-white">
+          class="relative flex cursor-default select-none py-2 pl-10 pr-4 hover:bg-teal-600 hover:text-white">
           <span [class.font-medium]="person === selectedPerson" [class.font-normal]="person !== selectedPerson" class="block truncate">{{ person.name }}</span>
           <span *ngIf="person === selectedPerson" class="absolute inset-y-0 left-0 flex items-center pl-3 text-teal-600">
             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
