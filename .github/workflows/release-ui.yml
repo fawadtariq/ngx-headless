@@ -46,6 +46,11 @@ jobs:
           corepack enable
           corepack prepare pnpm@latest --activate
           pnpm install
+      
+      - name: Update package.json version
+        run: |
+          VERSION=${{ steps.extract_version.outputs.version }}
+          pnpm version --no-git-tag-version $VERSION
 
       - name: Build Library
         run: pnpm build:ui
@@ -58,13 +63,12 @@ jobs:
         run: |
           BRANCH="docs/version-${{ steps.extract_version.outputs.version }}"
           git checkout -b "$BRANCH"
-          git add docs/ngx-headless-ui/versioned_docs
-          git add docs/ngx-headless-ui/versioned_sidebars
-          git add docs/ngx-headless-ui/versions.json
+          git add package.json
+          git add docs/ngx-headless-ui/
           git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
           git push origin "$BRANCH"
           
-          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "::set-output name=branch::$BRANCH"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
