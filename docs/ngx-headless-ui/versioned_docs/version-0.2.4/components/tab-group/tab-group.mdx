@@ -1,0 +1,264 @@
+---
+title: Tabs
+description: Accessible, unstyled tab interface for Angular.
+sidebar_label: Tabs
+---
+
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+# Tabs
+
+The `TabGroup` component and its children (`TabList`, `Tab`, `TabPanel`) create a fully accessible, unstyled tabbed interface. Inspired by Headless UI’s [Tabs](https://headlessui.com/v1/vue/tabs), but built natively for Angular.
+
+It gives you complete control over markup and styling while providing accessible keyboard navigation and ARIA roles.
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="/embeds/tabgroup/main"
+language="html"
+code={`<div class="w-full h-full flex items-center justify-center px-5 ">
+    <div class="mx-auto w-full max-w-md rounded-2xl p-2 flex flex-col gap-2">
+        <TabGroup #tabGroup="ngxTabGroup" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndex = $event"
+            [defaultIndex]="0">
+            <TabList class="flex space-x-1 rounded-xl bg-primary-900/20 p-1">
+                <ng-container *ngFor="let category of categories; let i = index">
+                    <Tab [index]="i" [disabled]="category.disabled" class="w-full">
+                        <button [ngClass]="[
+                            'w-full rounded-lg py-2.5 text-sm font-medium leading-5',
+                            'ring-white/60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
+                            tabGroup.selectedIndex === i
+                                ? 'bg-white text-primary-700 shadow'
+                                : 'text-primary-100 hover:bg-white/[0.12] hover:text-white'
+                            ]">
+                            {{ category.label }}
+                        </button>
+                    </Tab>
+                </ng-container>
+            </TabList>
+
+            <div class="mt-2">
+                <ng-container *ngFor="let category of categories; let i = index">
+                    <TabPanel [index]="i">
+                        <ul
+                            class="rounded-xl bg-white p-2 ring-white/60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2">
+                            <li *ngFor="let post of category.items" class="relative rounded-xl p-3 hover:bg-gray-100">
+                                <h3 class="text-sm font-medium leading-5">
+                                    {{ post.title }}
+                                </h3>
+
+                                <ul class="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+                                    <li>{{ post.date }}</li>
+                                    <li>&middot;</li>
+                                    <li>{{ post.commentCount }} comments</li>
+                                    <li>&middot;</li>
+                                    <li>{{ post.shareCount }} shares</li>
+                                </ul>
+
+                                <p
+                                    class="absolute inset-0 rounded-md ring-primary-400 focus:z-10 focus:outline-none focus:ring-2">
+                                </p>
+                            </li>
+                        </ul>
+                    </TabPanel>
+                </ng-container>
+            </div>
+        </TabGroup>
+    </div>
+</div>`}
+/>
+
+## When to use it
+
+Use `TabGroup` when you need a tabbed UI that is:
+
+- Fully customizable in layout and appearance
+- Accessible with screen readers and keyboard navigation
+- Controlled via Angular templateRefs or DI
+- Compatible with reactive or template-driven forms
+
+Common use cases:
+
+- Sectioned content areas
+- Multi-step forms
+- Data toggles
+
+## Anatomy
+
+A complete `TabGroup` is composed of:
+
+- **`TabGroup`** – The root container that manages the tab state
+- **`TabList`** – The container for tabs
+- **`Tab`** – Each clickable tab option
+- **`TabPanel`** – The content area for each tab
+
+## Features
+
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<TabGroup>`
+  - `<div ngxTabGroup>`
+  - `<ngx-headlessui-tab-group>`
+- ✅ Works with both `#templateRefs` and Angular DI (`TabsContextService`)
+- ✅ Supports multiple instances per page
+
+## Installation
+
+`TabGroup` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+
+Import the components directly:
+
+```ts
+import {
+  TabGroupComponent,
+  TabListComponent,
+  TabComponent,
+  TabPanelComponent,
+} from "@ngx-headless/ui";
+```
+
+## Usage Examples
+
+### Template Reference — Basic Usage
+
+```html
+<TabGroup #tabs="ngxTabGroup" [defaultIndex]="0">
+  <TabList>
+    <Tab [index]="0">Tab 1</Tab>
+    <Tab [index]="1">Tab 2</Tab>
+  </TabList>
+  <TabPanel [index]="0">Content 1</TabPanel>
+  <TabPanel [index]="1">Content 2</TabPanel>
+</TabGroup>
+```
+
+### Template Reference — Access from Parent Component
+
+```ts
+@ViewChild('tabs') tabsGroup!: TabGroupComponent;
+
+ngAfterViewInit() {
+  this.tabsGroup.selectTab(0); // 0 or any other index
+}
+```
+
+## Accessibility
+
+This component handles:
+
+- `role="tablist"` on the tab list
+- `role="tab"` and `aria-selected` on each tab
+- `role="tabpanel"` and `hidden` on each panel
+- Keyboard navigation: `←`, `→`, `Home`, `End` to move focus
+
+## Animations
+
+`TabPanel` can be animated freely using Angular’s built-in animation system.
+
+Angular supports entry/exit transitions using `@trigger` bindings and the `:enter`/`:leave` lifecycle hooks.
+
+👉 [See Angular Animations Guide](https://angular.dev/guide/animations)
+
+### Example
+
+```ts
+import { trigger, transition, style, animate } from "@angular/animations";
+
+@Component({
+  animations: [
+    trigger("fadeInOut", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("200ms ease-out", style({ opacity: 1 })),
+      ]),
+      transition(":leave", [
+        animate("150ms ease-in", style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
+})
+export class ExampleComponent {}
+```
+
+```html
+<TabPanel [index]="0" *ngIf="tabsGroup.getSelectedIndex() === 0" @fadeInOut>
+  Panel content goes here.
+</TabPanel>
+```
+
+✅ You now have full control over entrance and exit behavior of the panel.
+
+## Component API
+
+### `TabGroupComponent`
+
+| Input            | Type                  | Description                               |
+|------------------|-----------------------|-------------------------------------------|
+| `selectedIndex?` | `number`              | Controls the selected tab (controlled)    |
+| `defaultIndex?`  | `number`              | Initial selected tab (uncontrolled)       |
+| `class`          | `string`              | Classes applied to the wrapper            |
+
+| Output              | Type                 | Description                      |
+|---------------------|----------------------|----------------------------------|
+| `selectedIndexChange` | `EventEmitter<number>` | Emits when selected index changes |
+
+| Method              | Returns              | Description                             |
+|---------------------|----------------------|-----------------------------------------|
+| `selectTab(index)`  | `void`               | Sets the selected tab by index          |
+| `getSelectedIndex()` | `number | null`     | Gets the currently selected tab index   |
+
+---
+
+### `TabListComponent`
+
+| HostBinding | Type      | Description                                |
+|-------------|-----------|--------------------------------------------|
+| `role`      | `'tablist'` | ARIA role automatically assigned          |
+
+---
+
+### `TabComponent`
+
+| Input     | Type      | Description                                |
+|-----------|-----------|--------------------------------------------|
+| `index`   | `number`  | The index this tab represents              |
+| `disabled?` | `boolean` | Whether the tab is disabled               |
+
+| HostBinding       | Type        | Description                                |
+|-------------------|-------------|--------------------------------------------|
+| `role`            | `'tab'`     | ARIA role automatically assigned           |
+| `aria-selected`   | `boolean`   | Whether this tab is currently selected     |
+| `tabindex`        | `number`    | Controls keyboard focus                    |
+
+---
+
+### `TabPanelComponent`
+
+| Input     | Type      | Description                                |
+|-----------|-----------|--------------------------------------------|
+| `index`   | `number`  | The index this panel represents            |
+
+| HostBinding       | Type        | Description                                |
+|-------------------|-------------|--------------------------------------------|
+| `role`            | `'tabpanel'`| ARIA role automatically assigned           |
+| `hidden`          | `boolean`   | Hides the panel when not active            |
+
+---
+
+## Best Practices
+
+- Keep tab labels concise and descriptive.
+- Use consistent styling to visually group tabs.
+- Add transitions for panels to create a smooth user experience.
+- Use `selectedIndex` and `selectedIndexChange` for two-way binding when needed.
+
+---
+
+## See Also
+
+- [ARIA Tabs Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/)
+- [Headless UI - Tabs](https://headlessui.com/v1/vue/tabs)
