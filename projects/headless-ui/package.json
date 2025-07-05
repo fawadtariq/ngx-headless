@@ -1,6 +1,6 @@
 {
   "name": "@ngx-headless/ui",
-  "description": "Headless UI for Angular",
+  "description": "A library of unstyled, accessible, and composable UI primitives for Angular with full styling freedom",
   "version": "0.1.8",
   "author": {
     "name": "Fawad Tariq",
@@ -17,7 +17,24 @@
   "bugs": {
     "url": "https://github.com/fawadtariq/ngx-headless/issues?q=is%3Aissue%20state%3Aopen%20label%3A%40ngx-headless%2Fui"
   },
-   "scripts": {
+  "keywords": [
+    "angular",
+    "headless-ui",
+    "ui-components",
+    "angular-components",
+    "tailwindcss",
+    "bootstrap",
+    "unstyled-components",
+    "accessibility",
+    "a11y",
+    "typescript",
+    "angular-library",
+    "web-components",
+    "ui-library",
+    "frontend",
+    "design-system"
+  ],
+  "scripts": {
     "build": "ng-packagr -p ng-package.json"
   },
   "license": "MIT",

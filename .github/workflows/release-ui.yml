@@ -1,8 +1,8 @@
 name: Release Pipeline for @ngx-headless/ui
 description: |
   This workflow is triggered on pushes to tags matching '@ngx-headless/ui@*'.
-  It builds the library, publishes it to NPM, builds the documentation, deploys it to Azure Static Web Apps,
-  and creates a GitHub release.
+  It builds the library, publishes it to NPM, generates and commits the versioned documentation,
+  builds the documentation, deploys it to Azure Static Web Apps, and creates a GitHub release.
 
 on:
   push:
@@ -22,6 +22,14 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git User
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,6 +48,14 @@ jobs:
 
       - name: Version Docs
         run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
+
+      - name: Commit Versioned Docs
+        run: |
+          git add docs/ngx-headless-ui/versioned_docs
+          git add docs/ngx-headless-ui/versioned_sidebars
+          git add docs/ngx-headless-ui/versions.json
+          git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
+          git push origin HEAD:master
 
       - name: Copy .env.production to .env
         run: cp docs/ngx-headless-ui/.env.production docs/ngx-headless-ui/.env
