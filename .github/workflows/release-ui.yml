@@ -9,6 +9,10 @@ on:
     tags:
       - '@ngx-headless/ui@*'
 
+permissions:
+  contents: write      # needed to push commits and create branches
+  pull-requests: write # needed to create and manage PRs
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -49,13 +53,30 @@ jobs:
       - name: Version Docs
         run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
 
-      - name: Commit Versioned Docs
+      - name: Commit Versioned Docs via PR
+        id: docs_pr
         run: |
+          BRANCH="docs/version-${{ steps.extract_version.outputs.version }}"
+          git checkout -b "$BRANCH"
           git add docs/ngx-headless-ui/versioned_docs
           git add docs/ngx-headless-ui/versioned_sidebars
           git add docs/ngx-headless-ui/versions.json
           git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
-          git push origin HEAD:master
+          git push origin "$BRANCH"
+          
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+          title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+          body: "This PR adds the versioned docs for ${{ steps.extract_version.outputs.version }}"
+          head: ${{ steps.docs_pr.outputs.branch }}
+          base: master
+          draft: false
+
 
       - name: Copy .env.production to .env
         run: cp docs/ngx-headless-ui/.env.production docs/ngx-headless-ui/.env
