@@ -1,8 +1,9 @@
 name: Release Pipeline for @ngx-headless/ui
 description: |
   This workflow is triggered on pushes to tags matching '@ngx-headless/ui@*'.
-  It builds the library, publishes it to NPM, generates and commits the versioned documentation,
-  builds the documentation, deploys it to Azure Static Web Apps, and creates a GitHub release.
+  It builds the library, publishes it to NPM, generates versioned documentation,
+  creates a PR for the versioned docs, builds the documentation, deploys it to Azure Static Web Apps,
+  and creates a GitHub release.
 
 on:
   push:
@@ -12,6 +13,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Extract version from tag
@@ -25,11 +29,6 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Git User
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -46,16 +45,65 @@ jobs:
       - name: Build Library
         run: pnpm build:ui
 
+      - name: Create Branch for Versioned Docs
+        run: |
+          # Create a new branch for versioned docs
+          git checkout -b docs/version-${{ steps.extract_version.outputs.version }}
+
       - name: Version Docs
         run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
 
-      - name: Commit Versioned Docs
+      - name: Setup Git for Signed Commits
         run: |
-          git add docs/ngx-headless-ui/versioned_docs
-          git add docs/ngx-headless-ui/versioned_sidebars
-          git add docs/ngx-headless-ui/versions.json
-          git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
-          git push origin HEAD:master
+          # Configure Git to use GitHub Actions bot identity
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Import GPG key for signing commits if available
+          if [ -n "${{ secrets.GPG_PRIVATE_KEY }}" ] && [ -n "${{ secrets.GPG_PASSPHRASE }}" ]; then
+            echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --batch --import
+            git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
+            git config --global commit.gpgsign true
+            echo "Configured GPG signing"
+          else
+            echo "No GPG key available, commits will not be signed"
+          fi
+
+      - name: Commit and Push Versioned Docs
+        run: |
+          # Check if there are changes to commit
+          if git status --porcelain | grep -q "docs/ngx-headless-ui"; then
+            git add docs/ngx-headless-ui/versioned_docs
+            git add docs/ngx-headless-ui/versioned_sidebars
+            git add docs/ngx-headless-ui/versions.json
+            
+            # Use -S flag for signing if GPG is configured
+            if [ -n "${{ secrets.GPG_PRIVATE_KEY }}" ] && [ -n "${{ secrets.GPG_PASSPHRASE }}" ]; then
+              git commit -S -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+            else
+              git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+            fi
+            
+            git push origin docs/version-${{ steps.extract_version.outputs.version }}
+            echo "Pushed versioned docs to branch docs/version-${{ steps.extract_version.outputs.version }}"
+          else
+            echo "No changes to versioned docs detected"
+          fi
+
+      - name: Create Pull Request for Versioned Docs
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+          branch: docs/version-${{ steps.extract_version.outputs.version }}
+          base: master
+          title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+          body: |
+            This PR adds versioned documentation for release ${{ steps.extract_version.outputs.version }}.
+            
+            This PR was automatically created by the release pipeline.
+          labels: documentation
+          draft: false
 
       - name: Copy .env.production to .env
         run: cp docs/ngx-headless-ui/.env.production docs/ngx-headless-ui/.env
