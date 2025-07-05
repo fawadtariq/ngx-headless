@@ -257,9 +257,6 @@
   .inset-y-0 {
     inset-block: calc(var(--spacing) * 0);
   }
-  .top-1 {
-    top: calc(var(--spacing) * 1);
-  }
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
@@ -277,9 +274,6 @@
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
-  }
-  .left-1 {
-    left: calc(var(--spacing) * 1);
   }
   .left-1\/2 {
     left: calc(1/2 * 100%);
@@ -374,27 +368,12 @@
   .inline-flex {
     display: inline-flex;
   }
-  .table {
-    display: table;
-  }
   .size-8 {
     width: calc(var(--spacing) * 8);
     height: calc(var(--spacing) * 8);
   }
-  .\!h-98 {
-    height: calc(var(--spacing) * 98) !important;
-  }
-  .\!h-\[50vh\] {
-    height: 50vh !important;
-  }
   .\!h-\[70vh\] {
     height: 70vh !important;
-  }
-  .\!h-max {
-    height: max-content !important;
-  }
-  .\!h-screen {
-    height: 100vh !important;
   }
   .h-5 {
     height: calc(var(--spacing) * 5);
@@ -480,24 +459,14 @@
   .flex-none {
     flex: none;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .flex-shrink-0 {
     flex-shrink: 0;
   }
   .shrink-0 {
     flex-shrink: 0;
   }
-  .border-collapse {
-    border-collapse: collapse;
-  }
   .origin-top {
     transform-origin: top;
-  }
-  .-translate-x-1 {
-    --tw-translate-x: calc(var(--spacing) * -1);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1/2 * 100%) * -1);
@@ -509,10 +478,6 @@
   }
   .translate-x-9 {
     --tw-translate-x: calc(var(--spacing) * 9);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
-  .-translate-y-1 {
-    --tw-translate-y: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
@@ -530,9 +495,6 @@
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .flex-col {
     flex-direction: column;
@@ -654,9 +616,6 @@
   .border-transparent {
     border-color: transparent;
   }
-  .border-white {
-    border-color: var(--color-white);
-  }
   .border-white\/60 {
     border-color: color-mix(in srgb, #fff 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -714,9 +673,6 @@
   .bg-primary-600 {
     background-color: #f11056;
   }
-  .bg-primary-900 {
-    background-color: #910a40;
-  }
   .bg-primary-900\/20 {
     background-color: color-mix(in oklab, #910a40 20%, transparent);
   }
@@ -731,9 +687,6 @@
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
-  }
-  .bg-sky-900 {
-    background-color: var(--color-sky-900);
   }
   .bg-sky-900\/75 {
     background-color: color-mix(in srgb, oklch(39.1% 0.09 240.876) 75%, transparent);
@@ -1006,9 +959,6 @@
   .italic {
     font-style: italic;
   }
-  .underline {
-    text-decoration-line: underline;
-  }
   .opacity-65 {
     opacity: 65%;
   }
@@ -1053,9 +1003,6 @@
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .ring-black {
-    --tw-ring-color: var(--color-black);
-  }
   .ring-black\/5 {
     --tw-ring-color: color-mix(in srgb, #000 5%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1065,9 +1012,6 @@
   .ring-gray-300 {
     --tw-ring-color: var(--color-gray-300);
   }
-  .ring-gray-900 {
-    --tw-ring-color: var(--color-gray-900);
-  }
   .ring-gray-900\/5 {
     --tw-ring-color: color-mix(in srgb, oklch(21% 0.034 264.665) 5%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1076,9 +1020,6 @@
   }
   .ring-primary-400 {
     --tw-ring-color: #ff668c;
-  }
-  .ring-white {
-    --tw-ring-color: var(--color-white);
   }
   .ring-white\/60 {
     --tw-ring-color: color-mix(in srgb, #fff 60%, transparent);
@@ -1092,10 +1033,6 @@
   }
   .ring-offset-primary-400 {
     --tw-ring-offset-color: #ff668c;
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -1765,11 +1702,6 @@ svg.breadcrumbHomeIcon_YNFT {
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -1870,7 +1802,6 @@ svg.breadcrumbHomeIcon_YNFT {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
