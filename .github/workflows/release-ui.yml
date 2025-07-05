@@ -47,25 +47,27 @@ jobs:
           corepack prepare pnpm@latest --activate
           pnpm install
       
-      - name: Update @ngx-headless/ui version
-        run: |
-          jq --arg v "${{ env.version }}" '.version = $v' projects/headless-ui/package.json > tmp.$$.json
-          mv tmp.$$.json projects/headless-ui/package.json
-          git add projects/headless-ui/package.json
+      # - name: Update @ngx-headless/ui version
+      #   run: |
+      #     jq --arg v "${{ env.version }}" '.version = $v' projects/headless-ui/package.json > tmp.$$.json
+      #     mv tmp.$$.json projects/headless-ui/package.json
+      #     git add projects/headless-ui/package.json
 
       - name: Build Library
         run: pnpm build:ui
 
-      - name: Version Docs
-        run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
+      # - name: Version Docs
+      #   run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
 
       - name: Commit Versioned Docs via PR
         id: docs_pr
         run: |
           BRANCH="docs/version-${{ steps.extract_version.outputs.version }}"
-          git add projects/headless-ui/package.json
           git checkout -b "$BRANCH"
-          git add docs/ngx-headless-ui/
+          jq --arg v "${{ env.version }}" '.version = $v' projects/headless-ui/package.json > tmp.$$.json
+          mv tmp.$$.json projects/headless-ui/package.json
+          pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
+          git add .
           git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
           git push origin "$BRANCH"
           
