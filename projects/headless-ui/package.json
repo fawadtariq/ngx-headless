@@ -1,7 +1,7 @@
 {
   "name": "@ngx-headless/ui",
   "description": "A library of unstyled, accessible, and composable UI primitives for Angular with full styling freedom",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "author": {
     "name": "Fawad Tariq",
     "email": "connect@fawadtariq.dev",

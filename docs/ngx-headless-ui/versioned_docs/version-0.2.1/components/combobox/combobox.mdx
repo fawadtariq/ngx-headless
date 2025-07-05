@@ -1,0 +1,256 @@
+---
+title: Combobox (alpha)
+description: Accessible combobox component with search and filtering capabilities.
+sidebar_label: Combobox (alpha)
+---
+
+import { CodePlayground } from '@site/src/components/CodePlayground';
+
+:::info
+
+`Combobox` is still under development, might break sometimes. But nothing you can't fix manually by your own markup and styling.
+
+:::
+
+# Combobox
+
+The `Combobox` component is a fully headless and accessible UI primitive that combines an input field with a dropdown list of options. It's inspired by [HeadlessUI Combobox](https://headlessui.com/v1/vue/combobox), but built natively for Angular.
+
+It is useful for building autocomplete inputs, searchable selects, and typeahead components — while giving you complete control over markup and styling.
+
+<CodePlayground
+previewContainerClass="bg-gradient-to-r from-primary-400 to-secondary-500"
+preview="/embeds/combobox/main" language="html"
+  code={`<Combobox #combobox="ngxCombobox" class="relative w-72">
+  <div class="relative">
+    <ComboboxInput
+      class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+      placeholder="Search people..."
+      [value]="combobox.getInputValue()"
+      (input)="onInputChange($event)" />
+    <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
+      <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.08 1.04l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+      </svg>
+    </ComboboxButton>
+  </div>
+
+  <ComboboxOptions *ngIf="combobox.isOpen() && filteredPeople.length > 0" @slideDown
+    class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+    <ComboboxOption *ngFor="let person of filteredPeople" [value]="person"
+      class="relative cursor-default select-none py-2 pl-10 pr-4 hover:bg-teal-600 hover:text-white">
+      <span [class.font-medium]="person === selectedPerson" [class.font-normal]="person !== selectedPerson" class="block truncate">{{ person.name }}</span>
+      <span *ngIf="person === selectedPerson" class="absolute inset-y-0 left-0 flex items-center pl-3 text-teal-600">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+        </svg>
+      </span>
+    </ComboboxOption>
+  </ComboboxOptions>
+
+  <div *ngIf="combobox.isOpen() && filteredPeople.length === 0 && query !== ''" class="relative cursor-default select-none py-2 px-4 text-gray-700">
+    Nothing found.
+  </div>
+</Combobox>`}
+/>
+
+## When to use it
+Use `Combobox` when you need a searchable select component that is:
+
+- Fully customizable in layout and appearance
+- Accessible with screen readers and keyboard navigation
+- Supports filtering and search functionality
+- Controlled via Angular `templateRefs` or `Dependency Injection (DI)`
+- Compatible with reactive or template-driven forms
+
+Common use cases:
+
+- Autocomplete inputs
+- Searchable select dropdowns
+- Typeahead components
+- User/tag pickers with search
+
+## Anatomy
+
+A complete `Combobox` is composed of five components:
+
+- **`Combobox`** - The provider and wrapper. Manages internal selection and input state.
+- **`ComboboxInput`** - The text input field for typing and filtering.
+- **`ComboboxButton`** - Optional trigger button to toggle the options.
+- **`ComboboxOptions`** - The container for all selectable options.
+- **`ComboboxOption`** - Individual selectable option items.
+
+All five components are standalone and composable.
+
+## Features
+
+- ✅ Accessible by default (ARIA attributes)
+- ✅ Tailwind-friendly (no styles imposed)
+- ✅ Multiple selectors supported:
+  - `<Combobox>`
+  - `<div ngxCombobox>`
+  - `<ngx-headlessui-combobox>`
+- ✅ Works with both `#templateRefs` and Angular DI (`ComboboxContextService`)
+- ✅ Supports multiple instances per page
+- ✅ Built-in filtering and search capabilities
+
+## Installation
+
+`Combobox` ships as part of the `@ngx-headless/ui` by default. Install if you haven't already.
+
+```bash
+npm install @ngx-headless/ui
+```
+Import the components directly:
+
+```ts
+import {
+  ComboboxComponent,
+  ComboboxInputComponent,
+  ComboboxButtonComponent,
+  ComboboxOptionsComponent,
+  ComboboxOptionComponent,
+} from "@ngx-headless/ui";
+```
+
+## Usage Examples
+
+### Template Reference — Basic Combobox
+
+```html
+<Combobox #c="ngxCombobox" [(modelValue)]="selectedValue">
+  <ComboboxInput [value]="c.getInputValue()" (input)="onInputChange($event)" />
+  <ComboboxButton>Toggle</ComboboxButton>
+  <ComboboxOptions *ngIf="c.isOpen()">
+    <ComboboxOption *ngFor="let option of filteredOptions" [value]="option">
+      {{ option.name }}
+    </ComboboxOption>
+  </ComboboxOptions>
+</Combobox>
+```
+
+### Template Reference — With Filtering
+
+```html
+<Combobox #c="ngxCombobox" [(modelValue)]="selectedPerson">
+  <ComboboxInput 
+    [value]="c.getInputValue()" 
+    (input)="updateQuery($event)"
+    placeholder="Search people..." />
+  <ComboboxOptions *ngIf="c.isOpen() && filteredPeople.length > 0">
+    <ComboboxOption *ngFor="let person of filteredPeople" [value]="person">
+      {{ person.name }}
+    </ComboboxOption>
+  </ComboboxOptions>
+  <div *ngIf="c.isOpen() && filteredPeople.length === 0">
+    No results found.
+  </div>
+</Combobox>
+```
+
+## Accessibility
+
+This component handles
+
+- `aria-expanded` on the `ComboboxInput` and `ComboboxButton`
+- `aria-haspopup="listbox"` on the `Combobox`
+- `aria-autocomplete="list"` on the `ComboboxInput`
+- `role="combobox"` on the `Combobox` and `ComboboxInput`
+- `role="listbox"` on the `ComboboxOptions`
+- `role="option"` on each `ComboboxOption`
+- `aria-selected` on the selected `ComboboxOption`
+- Keyboard interaction: arrow keys for navigation, Enter for selection, Escape to close
+- Screen reader compatibility for search and selection state
+
+## Animations
+
+`ComboboxOptions` can be animated freely using Angular's built-in animation system.
+
+### Example
+
+Add an animation trigger to your component:
+
+```ts
+import { trigger, transition, style, animate } from "@angular/animations";
+
+@Component({
+  animations: [
+    trigger("slideDown", [
+      transition(":enter", [
+        style({ opacity: 0, transform: "translateY(-10px)" }),
+        animate("150ms ease-out", style({ opacity: 1, transform: "translateY(0)" })),
+      ]),
+      transition(":leave", [
+        animate("100ms ease-in", style({ opacity: 0, transform: "translateY(-10px)" })),
+      ]),
+    ]),
+  ],
+})
+export class ExampleComponent {}
+```
+
+Use it in the template with `*ngIf`:
+
+```html
+<ComboboxOptions *ngIf="combobox.isOpen()" @slideDown>
+  Options go here.
+</ComboboxOptions>
+```
+
+## Component API
+
+### `ComboboxComponent`
+
+| Input         | Type      | Description               |
+| ------------- | --------- | ------------------------- |
+| `modelValue`  | `any`     | Currently selected value  |
+| `class`       | `string`  | Class for styling wrapper |
+
+| Output              | Type                | Description                    |
+| ------------------- | ------------------- | ------------------------------ |
+| `modelValueChange`  | `EventEmitter<any>` | Emits when selection changes   |
+
+| Method              | Description                     |
+| ------------------- | ------------------------------- |
+| `isOpen()`          | Returns `true` if options open  |
+| `toggle()`          | Toggles options open/close      |
+| `open()`            | Opens options                   |
+| `close()`           | Closes options                  |
+| `selectValue()`     | Selects a specific value        |
+| `getInputValue()`   | Returns current input text      |
+| `setInputValue()`   | Sets the input text value       |
+| `getFilteredOptions()` | Returns filtered option list |
+
+### `ComboboxInputComponent`
+
+- Automatically binds `aria-expanded`, `aria-autocomplete`, and `role`
+- Opens options on focus and input
+- Handles keyboard navigation (Escape, Arrow Down)
+
+### `ComboboxButtonComponent`
+
+- Automatically binds `aria-expanded` and `aria-haspopup`
+- Toggles options on click and keyboard interaction
+
+### `ComboboxOptionsComponent`
+
+- Visible only when `Combobox` is open
+- Can be styled or animated freely
+- `hidden` attribute used for visibility
+
+### `ComboboxOptionComponent`
+
+| Input      | Type      | Description                          |
+| ---------- | --------- | ------------------------------------ |
+| `value`    | `any`     | Value for this option                |
+| `disabled` | `boolean` | Prevents selection if `true`         |
+| `class`    | `string`  | Class applied to the option          |
+
+| Output     | Type              | Description                       |
+| ---------- | ----------------- | --------------------------------- |
+| `selected` | `EventEmitter<any>` | Emits when option is selected   |
+
+## See Also
+
+- [ARIA Combobox Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
+- [Headless UI - Combobox](https://headlessui.com/vue/combobox)
