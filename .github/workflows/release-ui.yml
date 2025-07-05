@@ -47,10 +47,10 @@ jobs:
           corepack prepare pnpm@latest --activate
           pnpm install
       
-      - name: Update package.json version
-        run: |
-          VERSION=${{ steps.extract_version.outputs.version }}
-          pnpm version --no-git-tag-version $VERSION
+      # - name: Update package.json version
+      #   run: |
+      #     VERSION=${{ steps.extract_version.outputs.version }}
+      #     pnpm version --no-git-tag-version $VERSION
 
       - name: Build Library
         run: pnpm build:ui
@@ -63,8 +63,6 @@ jobs:
         run: |
           BRANCH="docs/version-${{ steps.extract_version.outputs.version }}"
           git checkout -b "$BRANCH"
-          pnpm version --no-git-tag-version ${{ steps.extract_version.outputs.version }}
-          git add package.json
           git add docs/ngx-headless-ui/
           git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
           git push origin "$BRANCH"
@@ -78,7 +76,7 @@ jobs:
           commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
           title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
           body: "This PR adds the versioned docs for ${{ steps.extract_version.outputs.version }}"
-          head: docs/version-${{ steps.extract_version.outputs.version}}
+          head: docs/version-${{ steps.extract_version.outputs.version }}
           base: master
           draft: false
 
