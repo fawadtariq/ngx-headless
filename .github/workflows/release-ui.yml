@@ -73,17 +73,17 @@ jobs:
           
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
-      - name: Create Pull Request
-        if: steps.docs_pr.outputs.branch != ''
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.PAT_KEY }}
-          commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
-          title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
-          body: "This PR adds the versioned docs for ${{ steps.extract_version.outputs.version }}"
-          branch: ${{ steps.docs_pr.outputs.branch }}
-          base: master
-          draft: false
+      # - name: Create Pull Request
+      #   if: steps.docs_pr.outputs.branch != ''
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     token: ${{ secrets.PAT_KEY }}
+      #     commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+      #     title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+      #     body: "This PR adds the versioned docs for ${{ steps.extract_version.outputs.version }}"
+      #     branch: ${{ steps.docs_pr.outputs.branch }}
+      #     base: master
+      #     draft: false
 
 
       - name: Copy .env.production to .env
