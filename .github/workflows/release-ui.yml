@@ -69,7 +69,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_KEY }}
           commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
           title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
           body: "This PR adds the versioned docs for ${{ steps.extract_version.outputs.version }}"
