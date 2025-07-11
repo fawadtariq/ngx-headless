@@ -7,26 +7,24 @@ on:
 
 
 jobs:
-  setbranch:
-    name: Get working branch
-    runs-on: ubuntu-latest
-    outputs:
-      extract_branch: ${{ steps.extract_branch.outputs.branch }}
-    steps:
-      - name: Branch used
-        id: extract_branch
-        run: |
-          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
-            echo "::set-output name=branch::$(echo ${GITHUB_REF##*/})"
-          elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-            echo "::set-output name=branch::$(echo $GITHUB_BASE_REF)"
-          else
-            echo "::set-output name=branch::INVALID_EVENT_BRANCH_UNKNOWN"
-          fi
+  # setbranch:
+  #   name: Get working branch
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     extract_branch: ${{ steps.extract_branch.outputs.branch }}
+  #   steps:
+  #     - name: Branch used
+  #       id: extract_branch
+  #       run: |
+  #         if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+  #           echo "::set-output name=branch::$(echo ${GITHUB_REF##*/})"
+  #         elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+  #           echo "::set-output name=branch::$(echo $GITHUB_BASE_REF)"
+  #         else
+  #           echo "::set-output name=branch::INVALID_EVENT_BRANCH_UNKNOWN"
+  #         fi
   
   create-pr:
-    env:
-        BRANCH: ${{ needs.setbranch.outputs.extract_branch }}
     runs-on: ubuntu-latest
     steps:
       - name: Just Create A Pull Request
@@ -37,7 +35,7 @@ jobs:
           # A GitHub API token
           github_token: ${{ secrets.PAT_KEY }}
           # The head ref that should be pulled into base.
-          head: $BRANCH
+          head: ${{ github.ref_name }}
           # The title of the pull request.
           title: "docs: add versioned docs for"
           # The base branch for the pull request. Defaults to master.
