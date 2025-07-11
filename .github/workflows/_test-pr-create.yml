@@ -1,0 +1,30 @@
+name: "Test PR Creation"
+
+on:
+  push:
+    branches:
+      - 'docs/version-*'
+
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Just Create A Pull Request
+        # You may pin to the exact commit or the version.
+        # uses: thomaseizinger/create-pull-request@955adb4634198898bc24dca0468514c63a8fc98d
+        uses: thomaseizinger/create-pull-request@1.4.0
+        with:
+          # A GitHub API token
+          github_token: ${{ secrets.PAT_KEY }}
+          # The head ref that should be pulled into base.
+          head: ${{ github.event.workflow_run.head_branch }}
+          # The title of the pull request.
+          title: "docs: add versioned docs for"
+          # The base branch for the pull request. Defaults to master.
+          base: "master"
+          # The body of the pull request.
+          body: "This PR adds the versioned docs for"
+           
+          
