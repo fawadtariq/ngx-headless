@@ -12,12 +12,20 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ui": "ng build headless-ui --configuration production",
-    "build:demo:ui": "ng build demo --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+
+    "build:ui": "ng build headless-ui --configuration production",
+    "build:demo:ui": "ng build demo --configuration production",
+
+    "build:formkit": "ng build headless-formkit --configuration production",
+    "build:demo:formkit": "ng build demo-formkit --configuration production",
+
     "docs:build:ui": "pnpm --filter docs-ngx-headless-ui build",
-    "docs:version:ui": "pnpm --filter docs-ngx-headless-ui version"
+    "docs:version:ui": "pnpm --filter docs-ngx-headless-ui version",
+
+    "docs:build:formkit": "pnpm --filter docs-ngx-headless-formkit build",
+    "docs:version:formkit": "pnpm --filter docs-ngx-headless-formkit version"
   },
   "private": true,
   "workspaces": [

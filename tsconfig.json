@@ -8,6 +8,7 @@
     "strict": true,
     "paths": {
       "@ngx-headless/ui": ["./projects/headless-ui/src/public-api"],
+      "@ngx-headless/formkit": ["./projects/headless-formkit/src/public-api"],
       "headless-formkit": [
         "./dist/headless-formkit"
       ],

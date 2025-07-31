@@ -1,0 +1,17 @@
+<FormkitWrapper (onSubmit)="handleSubmit($event)">
+  <FormkitFieldComponent
+    name="email"
+    type="input"
+    label="Email"
+    [validators]="getValidator(['required', 'email'])"
+  />
+
+  <FormkitFieldComponent
+    name="bio"
+    type="textarea"
+    label="Bio"
+    [validators]="getValidator(['required'])"
+  />
+
+  <button type="submit" class="btn">Submit</button>
+</FormkitWrapper>

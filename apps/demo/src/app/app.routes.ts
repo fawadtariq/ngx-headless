@@ -1,23 +1,18 @@
 import { Routes } from '@angular/router';
 
-//Disclosure Embeds
+//ui
 import { DisclosureEmbeddedMainComponent } from './embeds/disclosure/main/disclosure-embedded-main';
-
 import { ListboxEmbeddedMainComponent } from './embeds/listbox/main/listbox-embedded-main';
-
 import { ComboboxEmbeddedMainComponent } from './embeds/combobox/main/combobox-embedded-main';
-
 import { PopoverEmbeddedMainComponent } from './embeds/popover/main/popover-embedded-main';
-
 import { DialogEmbeddedMainComponent } from './embeds/dialog/main/dialog-embedded-main';
-
-//RadioGroup Embeds
 import { RadioGroupEmbeddedMainComponent } from './embeds/radio-group/main/radiogroup-embedded-main';
-
-//TabGroup Embeds
 import { TabGroupEmbeddedMainComponent } from './embeds/tab-group/main/tabgroup-embedded-main';
 import { MenuEmbeddedMainComponent } from './embeds/menu/main/menu-embedded-main';
 import { SwitchEmbeddedMainComponent } from './embeds/switch/switch-embedded-main';
+
+//formkit
+import { FormkitEmbedsBasicComponent } from './formkit-embeds/basic/formkit-embeds-basic.component';
 
 export const routes: Routes = [
     {
@@ -115,4 +110,14 @@ export const routes: Routes = [
             }
         ],
     },
+    {
+        path: 'formkit-embeds',
+        children: [
+            {
+                path: 'basic',
+                component: FormkitEmbedsBasicComponent,
+                title: 'Formkit Embeds Basic Example',
+            },
+        ]
+    }
 ];
