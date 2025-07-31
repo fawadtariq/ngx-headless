@@ -2,5 +2,6 @@
  * Public API Surface of headless-formkit
  */
 
-export * from './lib/headless-formkit.service';
-export * from './lib/headless-formkit.component';
+export * from './lib/inputs/inputs-index';
+export * from './lib/formkit-wrapper/formkit-wrapper';
+export * from './lib/formkit-field/formkit-field';

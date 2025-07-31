@@ -4,7 +4,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@ngx-headless/ui": ["projects/headless-ui/src/public-api"]
+      "@ngx-headless/ui": ["projects/headless-ui/src/public-api"],
+      "@ngx-headless/formkit": ["projects/headless-formkit/src/public-api"],
     },
     "outDir": "../out-tsc/app",
     "types": []
