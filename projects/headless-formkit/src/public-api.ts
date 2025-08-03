@@ -5,3 +5,6 @@
 export * from './lib/inputs/inputs-index';
 export * from './lib/formkit-wrapper/formkit-wrapper';
 export * from './lib/formkit-field/formkit-field';
+export * from './lib/validation/validation-parser.service';
+export * from './lib/config/formkit-config.service';
+export * from './lib/toast.service';

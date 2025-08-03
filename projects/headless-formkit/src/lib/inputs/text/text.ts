@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { FormkitControlClasses } from '../../config/formkit-config.service';
 
 @Component({
   selector: 'TextField',
@@ -14,12 +15,8 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
             [id]="name"
             [formControl]="control"
             [attr.placeholder]="placeholder"
-            class="w-full rounded-md px-3 py-1.5 text-sm outline-2 -outline-offset-1"
-            [ngClass]="{
-              'cursor-not-allowed' : control.disabled,
-                        'border-red-700 outline-red-700 focus:outline-red-700': control.invalid && control.touched,
-                        'border-gray-300 outline-transparent focus:outline-adio-600': !(control.invalid && control.touched)
-                      }"
+            [attr.dir]="dir"
+            [ngClass]="classes?.input"
   />`,
 })
 
@@ -30,5 +27,7 @@ export class TextField {
   @Input() value?: any;
   @Input() disabled!: boolean;
   @Input() placeholder?: string;
+  @Input() dir?: 'ltr' | 'rtl';
+  @Input() classes?: FormkitControlClasses;
 
 }
