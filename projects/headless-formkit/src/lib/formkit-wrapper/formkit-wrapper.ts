@@ -3,6 +3,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormkitFieldComponent } from '../formkit-field/formkit-field';
 import { ToastService } from '../toast.service';
+import { ValidationParserService } from '../validation/validation-parser.service';
 
 @Component({
     selector: 'FormkitWrapper',
@@ -21,11 +22,21 @@ export class FormkitWrapperComponent implements AfterContentChecked {
 
     form = new FormGroup({});
 
-    constructor(private toast: ToastService) { }
+    constructor(
+        private toast: ToastService,
+        private validationParser: ValidationParserService
+    ) { }
 
     ngAfterContentChecked() {
         for (const field of this.fields) {
-            const control = new FormControl('', field.validators || []);
+            let finalValidators = field.validators || [];
+            if (field.validation) {
+                const parsedRules = this.validationParser.parseValidationString(field.validation);
+                const parsedValidators = this.validationParser.convertToAngularValidators(parsedRules);
+                finalValidators = [...finalValidators, ...parsedValidators];
+            }
+
+            const control = new FormControl('', finalValidators);
             this.form.addControl(field.name, control);
             field.form = this.form; // inject form into field
         }

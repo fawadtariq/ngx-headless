@@ -4,28 +4,27 @@ import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { FormkitControlClasses } from '../../config/formkit-config.service';
 
 @Component({
-  selector: 'TextAreaField',
+  selector: 'EmailField',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   template: `
-          <textarea
-          *ngIf="control"
-            [id]="name"
-            [formControl]="control"
-            [attr.placeholder]="placeholder"
-            [attr.dir]="dir"
-            [rows]="rows ||  4"
-            [ngClass]="classes?.input"
-          ></textarea>`,
+    <input
+      *ngIf="control"
+      type="email"
+      [id]="name"
+      [formControl]="control"
+      [attr.placeholder]="placeholder"
+      [attr.dir]="dir"
+      [attr.autocomplete]="autocomplete"
+      [ngClass]="classes?.input"
+    />
+  `,
 })
-
-export class TextAreaField {
-  @Input() control!: FormControl
+export class EmailField {
+  @Input() control!: FormControl;
   @Input() name!: string;
-  @Input() label?: string;
   @Input() placeholder?: string;
-  @Input() rows!: number;
+  @Input() autocomplete: string = 'email';
   @Input() dir?: 'ltr' | 'rtl';
   @Input() classes?: FormkitControlClasses;
-
 }
