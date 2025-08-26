@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { ControlInputOptions, SelectOption } from '../../types/control-input';
+import { ControlInputOptions, SelectOption } from '../../types/control-inputs';
 
 @Component({
   selector: 'SelectField',

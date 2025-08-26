@@ -8,5 +8,5 @@ export * from './lib/formkit-field/formkit-field';
 export * from './lib/validation/validation-parser.service';
 export * from './lib/config/formkit-config.service';
 export * from './lib/toast.service';
-export * from './lib/types/control-input';
+export * from './lib/types/control-inputs';
 export * from './lib/types/validator-metadata';

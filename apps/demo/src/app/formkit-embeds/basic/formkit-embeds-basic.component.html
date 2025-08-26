@@ -1,17 +1,58 @@
-<FormkitWrapper (onSubmit)="handleSubmit($event)">
-  <FormkitFieldComponent
+<FormkitWrapper #formkitWrapper="formkitWrapper" (onSubmit)="handleSubmit($event)">
+  <FormkitField
+  class=""
     name="email"
-    type="email"
+    fieldType="email"
     label="Email"
-    validation="required|email"
+    validation="email|required"
+  />
+
+  <!-- <FormkitFieldComponent
+    name="bio"
+    fieldType="textarea"
+    value="test"
+    label="Bio"
+    validation="minlength:4"
   />
 
   <FormkitFieldComponent
-    name="bio"
-    type="textarea"
-    label="Bio"
-    validation="required"
+    name="age"
+    fieldType="switch"
+    label="Age"
+    validation="integer|min:18|max:100"
   />
+
+  <FormkitFieldComponent
+    name="newsletter"
+    fieldType="checkbox"
+    validation="required"
+    label="Subscribe to newsletter"
+  />
+
+  <FormkitFieldComponent
+    name="region"
+    fieldType="select"
+    label="Region"
+    [options]="[
+      { label: 'North America', value: 'na' },
+      { label: 'Europe', value: 'eu' },
+      { label: 'Asia', value: 'asia' }
+    ]"
+  />
+  
+  <FormkitFieldComponent
+    name="password"
+    fieldType="password"
+    label="Password"
+    validation="required|minlength:8"
+  /> -->
 
   <button type="submit" class="btn">Submit</button>
 </FormkitWrapper>
+
+{{ formkitWrapper.form.value | json }}
+
+
+<button (click)="clear()" class="bg-red-100">Clear</button>
+<button (click)="getField('bio')" class="bg-red-100">Get Bio</button>
+<button (click)="validate()" class="bg-red-100">Validate</button>

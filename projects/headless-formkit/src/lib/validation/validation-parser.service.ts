@@ -77,7 +77,7 @@ export class ValidationParserService {
 
   private getAngularValidator(rule: ParsedValidationRule): ValidatorFn | null {
     const { name, args } = rule;
-
+    // console.log(`Converting validation rule: ${name} with args:`, args);
     switch (name) {
       case 'required':
         return Validators.required;
@@ -150,6 +150,7 @@ export class ValidationParserService {
           return charset.test(value);
         });
       
+      case 'integer':
       case 'number':
         return this.createCustomValidator('number', (value: string) => {
           return !isNaN(Number(value)) && isFinite(Number(value));

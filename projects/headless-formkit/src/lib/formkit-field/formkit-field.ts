@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { TextAreaField } from '../inputs/text-area/text-area';
@@ -11,18 +11,18 @@ import { PasswordField } from '../inputs/password/password';
 import { EmailField } from '../inputs/email/email';
 import { ValidationParserService } from '../validation/validation-parser.service';
 import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-config.service';
-import { ControlInputOptions } from '../types/control-input';
+import { ControlInputOptions } from '../types/control-inputs';
 import { VALIDATOR_METADATA } from '../types/validator-metadata';
 
 @Component({
-  selector: 'FormkitFieldComponent',
+  selector: 'FormkitFieldComponent, FormkitField',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, TextAreaField, TextField, SelectField, CheckboxField, RadioGroupField, SwitchField, PasswordField, EmailField, CommonModule],
   template: `
-  <div [ngClass]="mergedClasses.wrapper" [attr.dir]="dir">
+  <ng-container>
     <label *ngIf="label" [for]="name" [ngClass]="mergedClasses.label">{{ label }}</label>
-
-    <ng-container [ngSwitch]="type">
+    
+    <ng-container [ngSwitch]="fieldType">
       <TextAreaField *ngSwitchCase="'textarea'" [options]="buildControlOptions()" />
       <SelectField *ngSwitchCase="'select'" [options]="buildControlOptions()" />
       <CheckboxField *ngSwitchCase="'checkbox'" [options]="buildControlOptions()" />
@@ -38,13 +38,14 @@ import { VALIDATOR_METADATA } from '../types/validator-metadata';
         {{ getValidationMessage(errorKey) || getDefaultValidationMessage(errorKey) }}
       </ng-container>
     </div>
-  </div>
+  </ng-container>
   `,
 })
 export class FormkitFieldComponent implements OnInit {
   form!: FormGroup;
+  
   @Input() name!: string;
-  @Input() type: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'switch' | 'password' | 'email' = 'input';
+  @Input() fieldType: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'switch' | 'password' | 'email' = 'input';
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() inlineErrors?: boolean;
@@ -58,6 +59,14 @@ export class FormkitFieldComponent implements OnInit {
   @Input() dir?: 'ltr' | 'rtl';
 
   mergedClasses: FormkitControlClasses = {};
+
+  @HostBinding('class') get hostClass(): string | undefined {
+    return this.mergedClasses.wrapper;
+  }
+
+  @HostBinding('dir') get hostDir(): 'ltr' | 'rtl' | undefined {
+    return this.dir;
+  }
 
   constructor(
     private validationParser: ValidationParserService,
@@ -73,6 +82,7 @@ export class FormkitFieldComponent implements OnInit {
     if (this.value) {
       ctrl.setValue(this.value)
     }
+   
 
     return ctrl;
   }
@@ -86,15 +96,18 @@ export class FormkitFieldComponent implements OnInit {
     }
 
     const globalClasses = this.configService.getGlobalClasses();
-    const controlClasses = this.configService.getControlClasses(this.type);
+    const controlClasses = this.configService.getControlClasses(this.fieldType);
     this.mergedClasses = this.configService.mergeClasses(globalClasses, controlClasses, this.classes || {});
+
+   
+    
   }
 
   buildControlOptions(): ControlInputOptions {
     return {
       control: this.control,
       name: this.name,
-      placeholder: this.placeholder,
+      placeholder: this.placeholder || '',
       dir: this.dir,
       classes: this.mergedClasses,
       disabled: this.disabled,

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { ControlInputOptions, RadioOption } from '../../types/control-input';
+import { ControlInputOptions, RadioOption } from '../../types/control-inputs';
 
 @Component({
   selector: 'RadioGroupField',
