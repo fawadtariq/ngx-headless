@@ -1,5 +1,5 @@
 import { FormControl } from "@angular/forms";
-import { FormkitControlClasses } from "@ngx-headless/formkit";
+import { FormkitControlClasses } from "../config/formkit-config.service";
 
 export interface SelectOption {
   label: string;
