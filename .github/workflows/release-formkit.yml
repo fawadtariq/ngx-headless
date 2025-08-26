@@ -1,0 +1,115 @@
+name: Release Pipeline for @ngx-headless/formkit
+description: |
+  This workflow is triggered on pushes to tags matching '@ngx-headless/formkit@*'.
+  It builds the library, publishes it to NPM, generates and commits the versioned documentation,
+  builds the documentation, deploys it to Azure Static Web Apps, and creates a GitHub release.
+
+on:
+  push:
+    tags:
+      - '@ngx-headless/formkit@*'
+
+permissions:
+  contents: write      # needed to push commits and create branches
+  pull-requests: write # needed to create and manage PRs
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          echo "version=${GITHUB_REF#refs/tags/@ngx-headless/formkit@}" >> $GITHUB_ENV
+          echo "::set-output name=version::${GITHUB_REF#refs/tags/@ngx-headless/formkit@}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git User
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm install
+      
+      # - name: Update @ngx-headless/formkit version
+      #   run: |
+      #     jq --arg v "${{ env.version }}" '.version = $v' projects/headless-ui/package.json > tmp.$$.json
+      #     mv tmp.$$.json projects/headless-ui/package.json
+      #     git add projects/headless-ui/package.json
+
+      - name: Build Library
+        run: pnpm build:formkit
+
+      # - name: Version Docs
+      #   run: pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
+
+      # - name: Commit Versioned Docs via PR
+      #   id: docs_pr
+      #   run: |
+      #     BRANCH="docs/version-${{ steps.extract_version.outputs.version }}"
+      #     git checkout -b "$BRANCH"
+      #     jq --arg v "${{ env.version }}" '.version = $v' projects/headless-ui/package.json > tmp.$$.json
+      #     mv tmp.$$.json projects/headless-ui/package.json
+      #     pnpm docs:version:ui ${{ steps.extract_version.outputs.version }}
+      #     git add .
+      #     git commit -m "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}" || echo "No changes to commit"
+      #     git push origin "$BRANCH"
+          
+      #     echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      # - name: Create Pull Request
+      #   if: steps.docs_pr.outputs.branch != ''
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     token: ${{ secrets.PAT_KEY }}
+      #     commit-message: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+      #     title: "docs: add versioned docs for ${{ steps.extract_version.outputs.version }}"
+      #     body: "This PR adds the versioned docs for ${{ steps.extract_version.outputs.version }}"
+      #     branch: ${{ steps.docs_pr.outputs.branch }}
+      #     base: master
+      #     draft: false
+
+
+      # - name: Copy .env.production to .env
+      #   run: cp docs/ngx-headless-ui/.env.production docs/ngx-headless-ui/.env
+
+      # - name: Build Docs
+      #   run: pnpm docs:build:ui
+
+      - name: Publish @ngx-headless/formkit
+        working-directory: ./dist/headless-formkit
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # - name: Deploy Docs to Azure Static Web Apps
+      #   uses: Azure/static-web-apps-deploy@v1
+      #   with:
+      #     app_location: "docs/ngx-headless-ui/build"
+      #     api_location: ""
+      #     output_location: ""
+      #     azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+      #     deployment_action: "upload"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
