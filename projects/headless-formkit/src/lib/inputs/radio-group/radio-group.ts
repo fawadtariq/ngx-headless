@@ -1,31 +1,25 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { FormkitControlClasses } from '../../config/formkit-config.service';
-
-export interface RadioOption {
-  label: string;
-  value: any;
-  disabled?: boolean;
-}
+import { ReactiveFormsModule } from "@angular/forms";
+import { ControlInputOptions, RadioOption } from '../../types/control-input';
 
 @Component({
   selector: 'RadioGroupField',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   template: `
-    <div *ngIf="control" [attr.dir]="dir">
+    <div *ngIf="options.control" [attr.dir]="options.dir">
       <label 
-        *ngFor="let option of options; trackBy: trackByValue" 
-        [ngClass]="classes?.label"
+        *ngFor="let option of radioOptions; trackBy: trackByValue" 
+        [ngClass]="options.classes?.label"
       >
         <input
           type="radio"
-          [name]="name"
+          [name]="options.name"
           [value]="option.value"
-          [formControl]="control"
+          [formControl]="options.control"
           [disabled]="option.disabled || false"
-          [ngClass]="classes?.input"
+          [ngClass]="options.classes?.input"
         />
         {{ option.label }}
       </label>
@@ -33,11 +27,11 @@ export interface RadioOption {
   `,
 })
 export class RadioGroupField {
-  @Input() control!: FormControl;
-  @Input() name!: string;
-  @Input() options: RadioOption[] = [];
-  @Input() dir?: 'ltr' | 'rtl';
-  @Input() classes?: FormkitControlClasses;
+  @Input() options!: ControlInputOptions;
+
+  get radioOptions(): RadioOption[] {
+    return (this.options.options as RadioOption[]) || [];
+  }
 
   trackByValue(index: number, option: RadioOption): any {
     return option.value;

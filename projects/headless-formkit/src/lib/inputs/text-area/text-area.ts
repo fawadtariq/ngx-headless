@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { FormkitControlClasses } from '../../config/formkit-config.service';
+import { ReactiveFormsModule } from "@angular/forms";
+import { ControlInputOptions } from '../../types/control-input';
 
 @Component({
   selector: 'TextAreaField',
@@ -9,23 +9,17 @@ import { FormkitControlClasses } from '../../config/formkit-config.service';
   imports: [ReactiveFormsModule, CommonModule],
   template: `
           <textarea
-          *ngIf="control"
-            [id]="name"
-            [formControl]="control"
-            [attr.placeholder]="placeholder"
-            [attr.dir]="dir"
-            [rows]="rows ||  4"
-            [ngClass]="classes?.input"
+          *ngIf="options.control"
+            [id]="options.name"
+            [formControl]="options.control"
+            [attr.placeholder]="options.placeholder"
+            [attr.dir]="options.dir"
+            [rows]="4"
+            [ngClass]="options.classes?.input"
           ></textarea>`,
 })
 
 export class TextAreaField {
-  @Input() control!: FormControl
-  @Input() name!: string;
-  @Input() label?: string;
-  @Input() placeholder?: string;
-  @Input() rows!: number;
-  @Input() dir?: 'ltr' | 'rtl';
-  @Input() classes?: FormkitControlClasses;
+  @Input() options!: ControlInputOptions;
 
 }

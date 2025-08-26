@@ -11,6 +11,8 @@ import { PasswordField } from '../inputs/password/password';
 import { EmailField } from '../inputs/email/email';
 import { ValidationParserService } from '../validation/validation-parser.service';
 import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-config.service';
+import { ControlInputOptions } from '../types/control-input';
+import { VALIDATOR_METADATA } from '../types/validator-metadata';
 
 @Component({
   selector: 'FormkitFieldComponent',
@@ -21,92 +23,20 @@ import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-c
     <label *ngIf="label" [for]="name" [ngClass]="mergedClasses.label">{{ label }}</label>
 
     <ng-container [ngSwitch]="type">
-      <TextAreaField 
-        *ngSwitchCase="'textarea'"
-        [control]="control" 
-        [name]="name" 
-        [placeholder]="placeholder" 
-        [dir]="dir"
-        [classes]="mergedClasses"
-      />
-      
-      <SelectField 
-        *ngSwitchCase="'select'"
-        [control]="control" 
-        [name]="name" 
-        [placeholder]="placeholder" 
-        [dir]="dir"
-        [options]="options || []"
-        [classes]="mergedClasses"
-      />
-      
-      <CheckboxField 
-        *ngSwitchCase="'checkbox'"
-        [control]="control" 
-        [name]="name" 
-        [dir]="dir"
-        [classes]="mergedClasses"
-      />
-      
-      <RadioGroupField 
-        *ngSwitchCase="'radio'"
-        [control]="control" 
-        [name]="name" 
-        [dir]="dir"
-        [options]="options || []"
-        [classes]="mergedClasses"
-      />
-      
-      <SwitchField 
-        *ngSwitchCase="'switch'"
-        [control]="control" 
-        [name]="name" 
-        [dir]="dir"
-        [classes]="mergedClasses"
-      />
-      
-      <PasswordField 
-        *ngSwitchCase="'password'"
-        [control]="control" 
-        [name]="name" 
-        [placeholder]="placeholder" 
-        [dir]="dir"
-        [classes]="mergedClasses"
-      />
-      
-      <EmailField 
-        *ngSwitchCase="'email'"
-        [control]="control" 
-        [name]="name" 
-        [placeholder]="placeholder" 
-        [dir]="dir"
-        [classes]="mergedClasses"
-      />
-      
-      <TextField 
-        *ngSwitchDefault
-        [disabled]="disabled == true ? true : false"
-        [value]="value"
-        [control]="control" 
-        [name]="name" 
-        [placeholder]="placeholder" 
-        [dir]="dir"
-        [classes]="mergedClasses"
-      />
+      <TextAreaField *ngSwitchCase="'textarea'" [options]="buildControlOptions()" />
+      <SelectField *ngSwitchCase="'select'" [options]="buildControlOptions()" />
+      <CheckboxField *ngSwitchCase="'checkbox'" [options]="buildControlOptions()" />
+      <RadioGroupField *ngSwitchCase="'radio'" [options]="buildControlOptions()" />
+      <SwitchField *ngSwitchCase="'switch'" [options]="buildControlOptions()" />
+      <PasswordField *ngSwitchCase="'password'" [options]="buildControlOptions()" />
+      <EmailField *ngSwitchCase="'email'" [options]="buildControlOptions()" />
+      <TextField *ngSwitchDefault [options]="buildControlOptions()" />
     </ng-container>
 
     <div *ngIf="control?.invalid && control?.touched && inlineErrors" [ngClass]="mergedClasses.error">
-      <ng-container *ngIf="control.errors?.['required']">{{ getValidationMessage('required') || 'This field is required.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['email']">{{ getValidationMessage('email') || 'Invalid email format.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['minlength']">{{ getValidationMessage('minlength') || 'Too short.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['maxlength']">{{ getValidationMessage('maxlength') || 'Too long.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['min']">{{ getValidationMessage('min') || 'Value is too small.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['max']">{{ getValidationMessage('max') || 'Value is too large.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['pattern']">{{ getValidationMessage('pattern') || 'Invalid format.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['alpha']">{{ getValidationMessage('alpha') || 'Only alphabetical characters allowed.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['alphanumeric']">{{ getValidationMessage('alphanumeric') || 'Only letters and numbers allowed.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['number']">{{ getValidationMessage('number') || 'Must be a valid number.' }}</ng-container>
-      <ng-container *ngIf="control.errors?.['url']">{{ getValidationMessage('url') || 'Must be a valid URL.' }}</ng-container>
+      <ng-container *ngFor="let errorKey of getErrorKeys()">
+        {{ getValidationMessage(errorKey) || getDefaultValidationMessage(errorKey) }}
+      </ng-container>
     </div>
   </div>
   `,
@@ -158,6 +88,29 @@ export class FormkitFieldComponent implements OnInit {
     const globalClasses = this.configService.getGlobalClasses();
     const controlClasses = this.configService.getControlClasses(this.type);
     this.mergedClasses = this.configService.mergeClasses(globalClasses, controlClasses, this.classes || {});
+  }
+
+  buildControlOptions(): ControlInputOptions {
+    return {
+      control: this.control,
+      name: this.name,
+      placeholder: this.placeholder,
+      dir: this.dir,
+      classes: this.mergedClasses,
+      disabled: this.disabled,
+      value: this.value,
+      options: this.options,
+      autocomplete: this.autocomplete,
+      label: this.label
+    };
+  }
+
+  getErrorKeys(): string[] {
+    return this.control?.errors ? Object.keys(this.control.errors) : [];
+  }
+
+  getDefaultValidationMessage(ruleName: string): string {
+    return VALIDATOR_METADATA[ruleName]?.defaultMessage || 'Invalid input.';
   }
 
   getValidationMessage(ruleName: string): string | null {

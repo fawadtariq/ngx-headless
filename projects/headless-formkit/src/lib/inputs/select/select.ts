@@ -1,13 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { FormkitControlClasses } from '../../config/formkit-config.service';
-
-export interface SelectOption {
-  label: string;
-  value: any;
-  disabled?: boolean;
-}
+import { ReactiveFormsModule } from "@angular/forms";
+import { ControlInputOptions, SelectOption } from '../../types/control-input';
 
 @Component({
   selector: 'SelectField',
@@ -15,15 +9,15 @@ export interface SelectOption {
   imports: [ReactiveFormsModule, CommonModule],
   template: `
     <select
-      *ngIf="control"
-      [id]="name"
-      [formControl]="control"
-      [attr.dir]="dir"
-      [ngClass]="classes?.input"
+      *ngIf="options.control"
+      [id]="options.name"
+      [formControl]="options.control"
+      [attr.dir]="options.dir"
+      [ngClass]="options.classes?.input"
     >
-      <option value="" *ngIf="placeholder" disabled>{{ placeholder }}</option>
+      <option value="" *ngIf="options.placeholder" disabled>{{ options.placeholder }}</option>
       <option 
-        *ngFor="let option of options" 
+        *ngFor="let option of selectOptions" 
         [value]="option.value"
         [disabled]="option.disabled"
       >
@@ -33,10 +27,9 @@ export interface SelectOption {
   `,
 })
 export class SelectField {
-  @Input() control!: FormControl;
-  @Input() name!: string;
-  @Input() placeholder?: string;
-  @Input() options: SelectOption[] = [];
-  @Input() dir?: 'ltr' | 'rtl';
-  @Input() classes?: FormkitControlClasses;
+  @Input() options!: ControlInputOptions;
+
+  get selectOptions(): SelectOption[] {
+    return (this.options.options as SelectOption[]) || [];
+  }
 }

@@ -1,28 +1,28 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { FormkitControlClasses } from '../../config/formkit-config.service';
+import { ReactiveFormsModule } from "@angular/forms";
+import { ControlInputOptions } from '../../types/control-input';
 
 @Component({
   selector: 'PasswordField',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   template: `
-    <div *ngIf="control" [attr.dir]="dir">
+    <div *ngIf="options.control" [attr.dir]="options.dir">
       <input
-        [id]="name"
+        [id]="options.name"
         [type]="showPassword ? 'text' : 'password'"
-        [formControl]="control"
-        [attr.placeholder]="placeholder"
-        [attr.dir]="dir"
-        [ngClass]="classes?.input"
+        [formControl]="options.control"
+        [attr.placeholder]="options.placeholder"
+        [attr.dir]="options.dir"
+        [attr.autocomplete]="options.autocomplete || 'current-password'"
+        [ngClass]="options.classes?.input"
       />
       <button
-        *ngIf="showToggle"
         type="button"
         (click)="togglePasswordVisibility()"
         [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-        [ngClass]="classes?.help"
+        [ngClass]="options.classes?.help"
       >
         {{ showPassword ? 'Hide' : 'Show' }}
       </button>
@@ -30,12 +30,7 @@ import { FormkitControlClasses } from '../../config/formkit-config.service';
   `,
 })
 export class PasswordField {
-  @Input() control!: FormControl;
-  @Input() name!: string;
-  @Input() placeholder?: string;
-  @Input() showToggle: boolean = true;
-  @Input() dir?: 'ltr' | 'rtl';
-  @Input() classes?: FormkitControlClasses;
+  @Input() options!: ControlInputOptions;
 
   showPassword: boolean = false;
 

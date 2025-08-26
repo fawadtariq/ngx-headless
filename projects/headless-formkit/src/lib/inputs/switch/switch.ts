@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
-import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import { FormkitControlClasses } from '../../config/formkit-config.service';
+import { ReactiveFormsModule } from "@angular/forms";
+import { ControlInputOptions } from '../../types/control-input';
 
 @Component({
   selector: 'SwitchField',
@@ -9,20 +9,17 @@ import { FormkitControlClasses } from '../../config/formkit-config.service';
   imports: [ReactiveFormsModule, CommonModule],
   template: `
     <input
-      *ngIf="control"
+      *ngIf="options.control"
       type="checkbox"
       role="switch"
-      [id]="name"
-      [formControl]="control"
-      [attr.dir]="dir"
-      [attr.aria-checked]="control.value"
-      [ngClass]="classes?.input"
+      [id]="options.name"
+      [formControl]="options.control"
+      [attr.dir]="options.dir"
+      [attr.aria-checked]="options.control.value"
+      [ngClass]="options.classes?.input"
     />
   `,
 })
 export class SwitchField {
-  @Input() control!: FormControl;
-  @Input() name!: string;
-  @Input() dir?: 'ltr' | 'rtl';
-  @Input() classes?: FormkitControlClasses;
+  @Input() options!: ControlInputOptions;
 }
