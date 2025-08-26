@@ -3,13 +3,15 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormkitFieldComponent } from '../formkit-field/formkit-field';
 import { ToastService } from '../toast.service';
+import { ValidationParserService } from '../validation/validation-parser.service';
 
 @Component({
     selector: 'FormkitWrapper',
     standalone: true,
+    exportAs: 'formkitWrapper',
     imports: [CommonModule, ReactiveFormsModule],
     template: `
-    <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-4" [ngClass]="class">
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" [ngClass]="class">
       <ng-content></ng-content>
     </form>
   `
@@ -21,11 +23,21 @@ export class FormkitWrapperComponent implements AfterContentChecked {
 
     form = new FormGroup({});
 
-    constructor(private toast: ToastService) { }
+    constructor(
+        private toast: ToastService,
+        private validationParser: ValidationParserService
+    ) { }
 
     ngAfterContentChecked() {
         for (const field of this.fields) {
-            const control = new FormControl('', field.validators || []);
+            let finalValidators = field.validators || [];
+            if (field.validation) {
+                const parsedRules = this.validationParser.parseValidationString(field.validation);
+                const parsedValidators = this.validationParser.convertToAngularValidators(parsedRules);
+                finalValidators = [...finalValidators, ...parsedValidators];
+            }
+
+            const control = new FormControl('', finalValidators);
             this.form.addControl(field.name, control);
             field.form = this.form; // inject form into field
         }
@@ -38,6 +50,24 @@ export class FormkitWrapperComponent implements AfterContentChecked {
             const summary = getFormErrorSummary(this.form);
             this.toast.show(summary);
         }
+    }
+
+    validate() {
+        this.form.markAllAsTouched();
+    }
+
+    clear() {
+        this.form.reset();
+        this.form.markAsPristine();
+        this.form.markAsUntouched();
+    }
+
+    getField(name: string): FormkitFieldComponent | undefined {
+        return this.fields.find(field => field.name === name);
+    }
+
+    get value (): any {
+        return this.form.value;
     }
 }
 

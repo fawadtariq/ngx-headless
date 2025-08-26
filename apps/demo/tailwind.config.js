@@ -58,5 +58,5 @@ module.exports = {
             },
         },
     },      // Enable dark mode
-    plugins: [],
+    plugins: [require('@tailwindcss/forms')],
 };

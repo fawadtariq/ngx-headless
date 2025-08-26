@@ -1,69 +1,77 @@
-import { Component, Input } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { FormGroup, FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { TextAreaField } from '../inputs/text-area/text-area';
-import { TextField } from "../inputs/text/text"; // adjust path as needed
+import { TextField } from "../inputs/text/text";
+import { SelectField } from '../inputs/select/select';
+import { CheckboxField } from '../inputs/checkbox/checkbox';
+import { RadioGroupField } from '../inputs/radio-group/radio-group';
+import { SwitchField } from '../inputs/switch/switch';
+import { PasswordField } from '../inputs/password/password';
+import { EmailField } from '../inputs/email/email';
+import { ValidationParserService } from '../validation/validation-parser.service';
+import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-config.service';
+import { ControlInputOptions } from '../types/control-inputs';
+import { VALIDATOR_METADATA } from '../types/validator-metadata';
 
 @Component({
-  selector: 'FormkitFieldComponent',
+  selector: 'FormkitFieldComponent, FormkitField',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, TextAreaField, TextField, CommonModule],
+  imports: [ReactiveFormsModule, NgIf, TextAreaField, TextField, SelectField, CheckboxField, RadioGroupField, SwitchField, PasswordField, EmailField, CommonModule],
   template: `
-  <div class="space-y-1" [attr.dir]="dir">
-    <label *ngIf="label" [for]="name" class="block text-sm/6 font-medium text-gray-600">{{ label }}</label>
-
-    <ng-container *ngIf="type === 'textarea'; else notTextArea">
-      <TextAreaField 
-      [control]="control" 
-      [name]="name" [placeholder]="placeholder" [dir]="dir"/>
-    </ng-container>
-
-
-    <ng-template #notTextArea>
-    <ng-container *ngIf="type === 'input'; else defaultInput">
-      <TextField 
-      [disabled]="disabled == true ? true : false"
-      [value]="value"
-      [control]="control" 
-      [name]="name" [placeholder]="placeholder" [dir]="dir" />
-    </ng-container>
-    </ng-template>
+  <ng-container>
+    <label *ngIf="label" [for]="name" [ngClass]="mergedClasses.label">{{ label }}</label>
     
+    <ng-container [ngSwitch]="fieldType">
+      <TextAreaField    style="display:contents" *ngSwitchCase="'textarea'" [options]="buildControlOptions()" />
+      <SelectField      style="display:contents" *ngSwitchCase="'select'" [options]="buildControlOptions()" />
+      <CheckboxField    style="display:contents" *ngSwitchCase="'checkbox'" [options]="buildControlOptions()" />
+      <RadioGroupField  style="display:contents" *ngSwitchCase="'radio'" [options]="buildControlOptions()" />
+      <SwitchField      style="display:contents" *ngSwitchCase="'switch'" [options]="buildControlOptions()" />
+      <PasswordField    style="display:contents" *ngSwitchCase="'password'" [options]="buildControlOptions()" />
+      <EmailField       style="display:contents" *ngSwitchCase="'email'" [options]="buildControlOptions()" />
+      <TextField        style="display:contents" *ngSwitchDefault [options]="buildControlOptions()" />
+    </ng-container>
 
-    <ng-template #defaultInput>
-      <input
-        [id]="name"
-        [type]="type"
-        [formControl]="control"
-        [attr.placeholder]="placeholder"
-        [attr.autocomplete]="autocomplete"
-        [attr.dir]="dir"
-        class="w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none"
-      />
-    </ng-template>
-
-    <div *ngIf="control?.invalid && control?.touched && inlineErrors" class="text-red-700 text-xs">
-      <ng-container *ngIf="control.errors?.['required']">This field is required.</ng-container>
-      <ng-container *ngIf="control.errors?.['email']">Invalid email format.</ng-container>
-      <ng-container *ngIf="control.errors?.['minlength']">Too short.</ng-container>
-      <ng-container *ngIf="control.errors?.['maxlength']">Too long.</ng-container>
+    <div *ngIf="control?.invalid && control?.touched && inlineErrors" [ngClass]="mergedClasses.error">
+      <ng-container *ngFor="let errorKey of getErrorKeys()">
+        {{ getValidationMessage(errorKey) || getDefaultValidationMessage(errorKey) }}
+      </ng-container>
     </div>
-  </div>
+  </ng-container>
   `,
 })
-export class FormkitFieldComponent {
+export class FormkitFieldComponent implements OnInit {
   form!: FormGroup;
+  
   @Input() name!: string;
-  @Input() type: 'input' | 'textarea' | 'radio' = 'input';
+  @Input() fieldType: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'switch' | 'password' | 'email' = 'input';
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() inlineErrors?: boolean;
   @Input() validators?: ValidatorFn[];
+  @Input() validation?: string;
+  @Input() classes?: FormkitControlClasses;
   @Input() value?: any;
   @Input() disabled?: boolean;
   @Input() options?: { label: string; value: any }[];
   @Input() autocomplete: string = 'on';
   @Input() dir?: 'ltr' | 'rtl';
+
+  mergedClasses: FormkitControlClasses = {};
+
+  @HostBinding('class') get hostClass(): string | undefined {
+    return this.mergedClasses.wrapper;
+  }
+
+  @HostBinding('dir') get hostDir(): 'ltr' | 'rtl' | undefined {
+    return this.dir;
+  }
+
+  constructor(
+    private validationParser: ValidationParserService,
+    private configService: FormkitConfigService
+  ) {}
 
 
   get control(): FormControl {
@@ -74,6 +82,7 @@ export class FormkitFieldComponent {
     if (this.value) {
       ctrl.setValue(this.value)
     }
+   
 
     return ctrl;
   }
@@ -85,5 +94,38 @@ export class FormkitFieldComponent {
     if (this.disabled === undefined || this.disabled === null) {
       this.disabled = false;
     }
+    const globalClasses = this.configService.getGlobalClasses();
+    const controlClasses = this.configService.getControlClasses(this.fieldType);
+    this.mergedClasses = this.configService.mergeClasses(globalClasses, controlClasses, this.classes || {});
+  }
+
+  buildControlOptions(): ControlInputOptions {
+    return {
+      control: this.control,
+      name: this.name,
+      placeholder: this.placeholder || '',
+      dir: this.dir,
+      classes: this.mergedClasses,
+      disabled: this.disabled,
+      value: this.value,
+      options: this.options,
+      autocomplete: this.autocomplete,
+      label: this.label
+    };
+  }
+
+  getErrorKeys(): string[] {
+    return this.control?.errors ? Object.keys(this.control.errors) : [];
+  }
+
+  getDefaultValidationMessage(ruleName: string): string {
+    return VALIDATOR_METADATA[ruleName]?.defaultMessage || 'Invalid input.';
+  }
+
+  getValidationMessage(ruleName: string): string | null {
+    return this.configService.getValidationMessage(ruleName, {
+      name: this.label || this.name,
+      value: this.control?.value
+    });
   }
 }
