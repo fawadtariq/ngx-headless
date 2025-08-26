@@ -1,6 +1,20 @@
 {
   "name": "@ngx-headless/formkit",
-  "version": "0.0.1",
+  "version": "0.0.4",
+  "author": {
+    "name": "Fawad Tariq",
+    "email": "connect@fawadtariq.dev",
+    "url": "https://fawadtariq.dev",
+    "organization": "@ngx-headless/ui",
+    "organizationUrl": "https://ngx-headless.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fawadtariq/ngx-headless/tree/master/projects/headless-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/fawadtariq/ngx-headless/issues?q=is%3Aissue%20state%3Aopen%20label%3A%40ngx-headless%2Fformkit"
+  },
   "publishConfig": {
     "access": "public"
   },
