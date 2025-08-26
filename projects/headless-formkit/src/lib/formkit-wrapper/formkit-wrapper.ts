@@ -8,9 +8,10 @@ import { ValidationParserService } from '../validation/validation-parser.service
 @Component({
     selector: 'FormkitWrapper',
     standalone: true,
+    exportAs: 'formkitWrapper',
     imports: [CommonModule, ReactiveFormsModule],
     template: `
-    <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="space-y-4" [ngClass]="class">
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" [ngClass]="class">
       <ng-content></ng-content>
     </form>
   `
@@ -49,6 +50,24 @@ export class FormkitWrapperComponent implements AfterContentChecked {
             const summary = getFormErrorSummary(this.form);
             this.toast.show(summary);
         }
+    }
+
+    validate() {
+        this.form.markAllAsTouched();
+    }
+
+    clear() {
+        this.form.reset();
+        this.form.markAsPristine();
+        this.form.markAsUntouched();
+    }
+
+    getField(name: string): FormkitFieldComponent | undefined {
+        return this.fields.find(field => field.name === name);
+    }
+
+    get value (): any {
+        return this.form.value;
     }
 }
 

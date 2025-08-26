@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { TextAreaField } from '../inputs/text-area/text-area';
@@ -13,14 +13,14 @@ import { ValidationParserService } from '../validation/validation-parser.service
 import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-config.service';
 
 @Component({
-  selector: 'FormkitFieldComponent',
+  selector: 'FormkitFieldComponent, FormkitField',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, TextAreaField, TextField, SelectField, CheckboxField, RadioGroupField, SwitchField, PasswordField, EmailField, CommonModule],
   template: `
-  <div [ngClass]="mergedClasses.wrapper" [attr.dir]="dir">
+  <ng-container>
     <label *ngIf="label" [for]="name" [ngClass]="mergedClasses.label">{{ label }}</label>
-
-    <ng-container [ngSwitch]="type">
+    
+    <ng-container [ngSwitch]="fieldType">
       <TextAreaField 
         *ngSwitchCase="'textarea'"
         [control]="control" 
@@ -76,11 +76,7 @@ import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-c
       
       <EmailField 
         *ngSwitchCase="'email'"
-        [control]="control" 
-        [name]="name" 
-        [placeholder]="placeholder" 
-        [dir]="dir"
-        [classes]="mergedClasses"
+        [options]="{ control: control, name: name, placeholder: placeholder || '', dir: dir, classes: mergedClasses }"  
       />
       
       <TextField 
@@ -108,13 +104,14 @@ import { FormkitConfigService, FormkitControlClasses } from '../config/formkit-c
       <ng-container *ngIf="control.errors?.['number']">{{ getValidationMessage('number') || 'Must be a valid number.' }}</ng-container>
       <ng-container *ngIf="control.errors?.['url']">{{ getValidationMessage('url') || 'Must be a valid URL.' }}</ng-container>
     </div>
-  </div>
+  </ng-container>
   `,
 })
 export class FormkitFieldComponent implements OnInit {
   form!: FormGroup;
+  
   @Input() name!: string;
-  @Input() type: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'switch' | 'password' | 'email' = 'input';
+  @Input() fieldType: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'switch' | 'password' | 'email' = 'input';
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() inlineErrors?: boolean;
@@ -128,6 +125,14 @@ export class FormkitFieldComponent implements OnInit {
   @Input() dir?: 'ltr' | 'rtl';
 
   mergedClasses: FormkitControlClasses = {};
+
+  @HostBinding('class') get hostClass(): string | undefined {
+    return this.mergedClasses.wrapper;
+  }
+
+  @HostBinding('dir') get hostDir(): 'ltr' | 'rtl' | undefined {
+    return this.dir;
+  }
 
   constructor(
     private validationParser: ValidationParserService,
@@ -143,6 +148,7 @@ export class FormkitFieldComponent implements OnInit {
     if (this.value) {
       ctrl.setValue(this.value)
     }
+   
 
     return ctrl;
   }
@@ -156,8 +162,11 @@ export class FormkitFieldComponent implements OnInit {
     }
 
     const globalClasses = this.configService.getGlobalClasses();
-    const controlClasses = this.configService.getControlClasses(this.type);
+    const controlClasses = this.configService.getControlClasses(this.fieldType);
     this.mergedClasses = this.configService.mergeClasses(globalClasses, controlClasses, this.classes || {});
+
+   
+    
   }
 
   getValidationMessage(ruleName: string): string | null {

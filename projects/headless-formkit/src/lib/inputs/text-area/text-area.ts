@@ -16,10 +16,12 @@ import { FormkitControlClasses } from '../../config/formkit-config.service';
             [attr.dir]="dir"
             [rows]="rows ||  4"
             [ngClass]="classes?.input"
+            
           ></textarea>`,
 })
 
 export class TextAreaField {
+  // @Input() inValue: any;
   @Input() control!: FormControl
   @Input() name!: string;
   @Input() label?: string;
@@ -28,4 +30,13 @@ export class TextAreaField {
   @Input() dir?: 'ltr' | 'rtl';
   @Input() classes?: FormkitControlClasses;
 
+  value: any;
+
+  // ngOnInit() {
+  //   if (this.inValue !== undefined) {
+  //     this.value = this.inValue;
+  //   } else {
+  //     this.value = '';
+  //   }
+  // }
 }

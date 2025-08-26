@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { FormkitControlClasses } from '../../config/formkit-config.service';
+import { ControlInputOptions } from "../../types/control-inputs";
 
 @Component({
   selector: 'EmailField',
@@ -9,14 +10,14 @@ import { FormkitControlClasses } from '../../config/formkit-config.service';
   imports: [ReactiveFormsModule, CommonModule],
   template: `
     <input
-      *ngIf="control"
+      *ngIf="options.control"
       type="email"
-      [id]="name"
-      [formControl]="control"
-      [attr.placeholder]="placeholder"
-      [attr.dir]="dir"
-      [attr.autocomplete]="autocomplete"
-      [ngClass]="classes?.input"
+      [id]="options.name"
+      [formControl]="options.control"
+      [attr.placeholder]="options.placeholder"
+      [attr.dir]="options.dir"
+      [attr.autocomplete]="'email'"
+      [ngClass]="options.classes?.input"
     />
   `,
 })
@@ -27,4 +28,6 @@ export class EmailField {
   @Input() autocomplete: string = 'email';
   @Input() dir?: 'ltr' | 'rtl';
   @Input() classes?: FormkitControlClasses;
+
+  @Input() options!: ControlInputOptions;
 }
