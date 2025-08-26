@@ -1,5 +1,5 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
 import { TextAreaField } from '../inputs/text-area/text-area';
 import { TextField } from "../inputs/text/text";
@@ -23,14 +23,14 @@ import { VALIDATOR_METADATA } from '../types/validator-metadata';
     <label *ngIf="label" [for]="name" [ngClass]="mergedClasses.label">{{ label }}</label>
     
     <ng-container [ngSwitch]="fieldType">
-      <TextAreaField *ngSwitchCase="'textarea'" [options]="buildControlOptions()" />
-      <SelectField *ngSwitchCase="'select'" [options]="buildControlOptions()" />
-      <CheckboxField *ngSwitchCase="'checkbox'" [options]="buildControlOptions()" />
-      <RadioGroupField *ngSwitchCase="'radio'" [options]="buildControlOptions()" />
-      <SwitchField *ngSwitchCase="'switch'" [options]="buildControlOptions()" />
-      <PasswordField *ngSwitchCase="'password'" [options]="buildControlOptions()" />
-      <EmailField *ngSwitchCase="'email'" [options]="buildControlOptions()" />
-      <TextField *ngSwitchDefault [options]="buildControlOptions()" />
+      <TextAreaField    style="display:contents" *ngSwitchCase="'textarea'" [options]="buildControlOptions()" />
+      <SelectField      style="display:contents" *ngSwitchCase="'select'" [options]="buildControlOptions()" />
+      <CheckboxField    style="display:contents" *ngSwitchCase="'checkbox'" [options]="buildControlOptions()" />
+      <RadioGroupField  style="display:contents" *ngSwitchCase="'radio'" [options]="buildControlOptions()" />
+      <SwitchField      style="display:contents" *ngSwitchCase="'switch'" [options]="buildControlOptions()" />
+      <PasswordField    style="display:contents" *ngSwitchCase="'password'" [options]="buildControlOptions()" />
+      <EmailField       style="display:contents" *ngSwitchCase="'email'" [options]="buildControlOptions()" />
+      <TextField        style="display:contents" *ngSwitchDefault [options]="buildControlOptions()" />
     </ng-container>
 
     <div *ngIf="control?.invalid && control?.touched && inlineErrors" [ngClass]="mergedClasses.error">
@@ -94,13 +94,9 @@ export class FormkitFieldComponent implements OnInit {
     if (this.disabled === undefined || this.disabled === null) {
       this.disabled = false;
     }
-
     const globalClasses = this.configService.getGlobalClasses();
     const controlClasses = this.configService.getControlClasses(this.fieldType);
     this.mergedClasses = this.configService.mergeClasses(globalClasses, controlClasses, this.classes || {});
-
-   
-    
   }
 
   buildControlOptions(): ControlInputOptions {
