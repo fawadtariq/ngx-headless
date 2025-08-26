@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormkitWrapperComponent, FormkitFieldComponent, TextAreaField } from '@ngx-headless/formkit';
 import { CommonModule } from '@angular/common';
-import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'formkit-embeds-basic',
@@ -10,18 +10,26 @@ import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
     imports: [CommonModule, FormkitWrapperComponent, FormkitFieldComponent, TextAreaField],
 })
 export class FormkitEmbedsBasicComponent {
+    @ViewChild(FormkitWrapperComponent) formkitWrapper!: FormkitWrapperComponent;
+
     handleSubmit(form: FormGroup) {
         console.log('Form submitted with:', form.value);
     }
 
-    getValidator(labels: string[]) {
-        const validators: ValidatorFn[] = [];
-        if (labels.includes('required')) {
-            validators.push(Validators.required);
+    clear(){
+        if (this.formkitWrapper) {
+            this.formkitWrapper.clear();
         }
-        if (labels.includes('email')) {
-            validators.push(Validators.email);
-        }
-        return validators;
     }
+
+    getField(name: string) {
+        console.log(this.formkitWrapper.getField(name));
+    }
+
+    validate(){
+        if (this.formkitWrapper) {
+            this.formkitWrapper.validate();
+        }
+    }
+
 }
